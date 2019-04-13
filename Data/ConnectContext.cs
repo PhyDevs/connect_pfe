@@ -20,6 +20,7 @@ namespace Connect.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new ConnectUserConfiguration());
+            modelBuilder.ApplyConfiguration(new DepartmentConfiguration());
         }
     }
 }
