@@ -15,10 +15,10 @@ namespace Connect.Models
 
         public bool IsPinned { get; set; }
 
-        public int AuthorId { get; set; }
+        public Guid AuthorId { get; set; }
         public ConnectUser Author { get; set; }
 
-        public int DepartmentId { get; set; }
-        public Department Department { get; set; }
+        public int CourseId { get; set; }
+        public Course Course { get; set; }
     }
 }

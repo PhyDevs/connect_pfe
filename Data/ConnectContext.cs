@@ -13,8 +13,8 @@ namespace Connect.Data
         public ConnectContext(DbContextOptions<ConnectContext> options) : base(options) { }
 
         DbSet<ConnectUser> Users { get; set; }
-        DbSet<Course> Courses { get; set; }
         DbSet<Department> Departments { get; set; }
+        DbSet<Course> Courses { get; set; }
         DbSet<Message> Messages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -23,6 +23,7 @@ namespace Connect.Data
             modelBuilder.ApplyConfiguration(new DepartmentConfiguration());
             modelBuilder.ApplyConfiguration(new UserDepartmentConfiguration());
             modelBuilder.ApplyConfiguration(new CourseConfiguration());
+            modelBuilder.ApplyConfiguration(new MessageConfiguration());
         }
     }
 }
