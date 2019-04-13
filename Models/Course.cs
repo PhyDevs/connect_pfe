@@ -11,7 +11,7 @@ namespace Connect.Models
 
         public string Name { get; set; }
 
-        public int TeacherId { get; set; }
+        public Guid TeacherId { get; set; }
         public ConnectUser Teacher { get; set; }
 
         public int DepartmentId { get; set; }
