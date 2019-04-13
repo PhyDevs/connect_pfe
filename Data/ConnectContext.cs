@@ -21,6 +21,7 @@ namespace Connect.Data
         {
             modelBuilder.ApplyConfiguration(new ConnectUserConfiguration());
             modelBuilder.ApplyConfiguration(new DepartmentConfiguration());
+            modelBuilder.ApplyConfiguration(new UserDepartmentConfiguration());
         }
     }
 }

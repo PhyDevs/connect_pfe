@@ -7,7 +7,8 @@ namespace Connect.Models
 {
     public class UserDepartment
     {
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
+
         public ConnectUser User { get; set; }
 
         public int DepartmentId { get; set; }

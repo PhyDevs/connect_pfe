@@ -12,5 +12,7 @@ namespace Connect.Models
         public string Name { get; set; }
 
         public string Abbr { get; set; }
+
+        public List<UserDepartment> Users { get; set; }
     }
 }

@@ -33,5 +33,7 @@ namespace Connect.Models
         public string Password { get; set; }
 
         public Roles Role { get; set; }
+
+        public List<UserDepartment> Departments { get; set; }
     }
 }
