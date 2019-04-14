@@ -12,10 +12,10 @@ namespace Connect.Data
     {
         public ConnectContext(DbContextOptions<ConnectContext> options) : base(options) { }
 
-        DbSet<ConnectUser> Users { get; set; }
-        DbSet<Department> Departments { get; set; }
-        DbSet<Course> Courses { get; set; }
-        DbSet<Message> Messages { get; set; }
+        public DbSet<ConnectUser> Users { get; set; }
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
