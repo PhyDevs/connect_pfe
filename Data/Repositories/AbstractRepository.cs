@@ -16,27 +16,27 @@ namespace Connect.Data.Repositories
             _context = context;
         }
 
-        protected async Task<TEntity> GetAsync(ValueType id)
+        public async Task<TEntity> GetAsync(ValueType id)
         {
             return await _context.Set<TEntity>().FindAsync(id);
         }
 
-        protected async Task<IEnumerable<TEntity>> GetAllAsync()
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             return await _context.Set<TEntity>().AsNoTracking().ToListAsync();
         }
 
-        protected async Task<IEnumerable<TEntity>> Find(Expression<Func<TEntity, bool>> expression)
+        public async Task<IEnumerable<TEntity>> Find(Expression<Func<TEntity, bool>> expression)
         {
             return await _context.Set<TEntity>().Where(expression).ToListAsync();
         }
 
-        protected void Add(TEntity entity)
+        public void Add(TEntity entity)
         {
             _context.Set<TEntity>().AddAsync(entity);
         }
 
-        protected void Remove(TEntity entity)
+        public void Remove(TEntity entity)
         {
             _context.Set<TEntity>().Remove(entity);
         }

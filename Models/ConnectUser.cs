@@ -7,9 +7,9 @@ namespace Connect.Models
 {
     public enum Roles
     {
-        Admin,
+        Student,
         Teacher,
-        Student
+        Admin
     }
 
     public class ConnectUser
