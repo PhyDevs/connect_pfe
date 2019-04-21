@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Connect.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,6 +29,7 @@ namespace Connect
             services.AddDbContext<ConnectContext>(opt => 
                 opt.UseSqlServer(Configuration.GetConnectionString("ConnectConnectionString"))
             );
+            services.AddAutoMapper();
 
             services.AddScoped<IEntityManager, EntityManager>();
         }
