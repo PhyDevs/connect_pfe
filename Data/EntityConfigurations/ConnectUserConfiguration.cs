@@ -34,6 +34,10 @@ namespace Connect.Data.EntityConfigurations
                 .IsRequired();
 
             builder
+                .Property(cu => cu.Salt)
+                .IsRequired();
+
+            builder
                 .Property(cu => cu.Password)
                 .IsRequired();
 

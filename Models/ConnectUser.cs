@@ -30,7 +30,9 @@ namespace Connect.Models
 
         public int NInscription { get; set; }
 
-        public string Password { get; set; }
+        public byte[] Salt { get; set; }
+
+        public byte[] Password { get; set; }
 
         public Roles Role { get; set; }
 
