@@ -24,8 +24,6 @@ namespace Connect.Data.EntityConfigurations
                 .HasMaxLength(50)
                 .IsRequired();
 
-            builder.Ignore(cu => cu.FullName);
-
             builder
                 .HasIndex(cu => cu.NInscription)
                 .IsUnique();

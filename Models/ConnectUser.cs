@@ -20,14 +20,6 @@ namespace Connect.Models
 
         public string LastName { get; set; }
 
-        public string FullName
-        {
-            get
-            {
-                return $"{FirstName} {LastName}";
-            }
-        }
-
         public int NInscription { get; set; }
 
         public byte[] Salt { get; set; }
