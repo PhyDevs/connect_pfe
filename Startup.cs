@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Connect.Data;
+using Connect.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +33,7 @@ namespace Connect
             services.AddAutoMapper();
 
             services.AddScoped<IEntityManager, EntityManager>();
+            services.AddSingleton<IConnectSecurity, ConnectSecurity>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
