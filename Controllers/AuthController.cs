@@ -38,6 +38,8 @@ namespace Connect.Controllers
         [HttpPost("register")]
         public async Task<ActionResult> Register([FromBody] ConnectUserRegister request)
         {
+            if (User.Identity.IsAuthenticated) return Forbid();
+
             ConnectUser user = await _em.Users.FindByKeyAsync(request.NInscription);
             if (user != null)
                 return BadRequest(new { error = "This user exist."});
