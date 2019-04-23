@@ -1,7 +1,9 @@
-﻿using System.Text;
+﻿using System.Security.Claims;
+using System.Text;
 using AutoMapper;
 using Connect.Data;
 using Connect.Helpers;
+using Connect.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -42,6 +44,16 @@ namespace Connect
                             Encoding.UTF8.GetBytes(Configuration.GetSection("TokenAuthentication:SecretKey").Value))
                     };
                 });
+
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("AdminOnly",
+                    policy => policy.RequireClaim(ClaimTypes.Role, Roles.Admin.ToString()));
+                opt.AddPolicy("TeacherOnly",
+                    policy => policy.RequireClaim(ClaimTypes.Role, new string[] {
+                        Roles.Admin.ToString(), Roles.Teacher.ToString() }));
+
+            });
 
             services.AddAutoMapper();
 
