@@ -56,8 +56,8 @@ namespace Connect.Helpers
         {
             Claim[] claims = new[] 
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.NInscription.ToString()),
-                new Claim(JwtRegisteredClaimNames.NameId, $"{user.FirstName} {user.LastName}"),
+                new Claim(ClaimTypes.NameIdentifier, user.NInscription.ToString()),
+                new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
                 new Claim(ClaimTypes.Role, user.Role.ToString())
             };
 
