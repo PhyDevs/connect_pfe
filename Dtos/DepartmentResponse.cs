@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Connect.Models
+namespace Connect.Dtos
 {
-    public class Department
+    public class DepartmentResponse
     {
         public int Id { get; set; }
 
@@ -10,8 +10,6 @@ namespace Connect.Models
 
         public string Abbr { get; set; }
 
-        public ICollection<UserDepartment> Users { get; set; }
-
-        public ICollection<Course> Courses { get; set; }
+        public ICollection<CourseListResponse> Courses { get; set; }
     }
 }
