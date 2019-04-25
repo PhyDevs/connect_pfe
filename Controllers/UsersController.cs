@@ -26,17 +26,18 @@ namespace Connect.Controllers
             _mapper = mapper;
         }
 
+        // GET: api/Users
         [Authorize(Policy = "AdminOnly")]
         [HttpGet]
-        public async Task<ActionResult> GetAllAsync()
+        public async Task<ActionResult> GetUsers()
         {
             IEnumerable<ConnectUser> users = await _em.Users.GetAllAsync();
-
             return Ok(_mapper.Map<IEnumerable<ConnectUserResponse>>(users));
         }
 
+        // GET: api/Users/293b3db7-7dea-4270-ba70-08d6c818495a
         [HttpGet("{id}")]
-        public async Task<ActionResult<ConnectUserResponse>> GetAsync(Guid id)
+        public async Task<ActionResult<ConnectUserResponse>> GetUser([FromRoute] Guid id)
         {
             ConnectUser user = await _em.Users.GetAsync(id);
             if (user == null) return NotFound();
@@ -44,17 +45,19 @@ namespace Connect.Controllers
             return _mapper.Map<ConnectUserResponse>(user);
         }
 
+        // GET: api/Users/2
         [HttpGet("{iNumber:int}")]
-        public async Task<ActionResult<ConnectUserResponse>> GetAsync(int iNumber)
+        public async Task<ActionResult<ConnectUserResponse>> GetUser([FromRoute] int iNumber)
         {
-            ConnectUser user = await _em.Users.FindByKeyAsync(iNumber);
+            ConnectUser user = await _em.Users.FindByIndexAsync(iNumber);
             if (user == null) return NotFound();
 
             return _mapper.Map<ConnectUserResponse>(user);
         }
 
+        // PUT: api/Users/2
         [HttpPut("{iNumber}")]
-        public async Task<ActionResult> UpdateAsync(int iNumber, [FromBody] ConnectUserUpdate request)
+        public async Task<IActionResult> PutUser([FromRoute] int iNumber, [FromBody] ConnectUserUpdate request)
         {
             int.TryParse(
                 User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value,
@@ -62,7 +65,7 @@ namespace Connect.Controllers
 
             if (nameId == 0 || nameId != iNumber) return Forbid();
 
-            ConnectUser user = await _em.Users.FindByKeyAsync(iNumber);
+            ConnectUser user = await _em.Users.FindByIndexAsync(iNumber);
             if (user == null) return NotFound();
 
             if (request.FirstName != null) user.FirstName = request.FirstName;
@@ -71,14 +74,15 @@ namespace Connect.Controllers
             await _em.FlushAsync();
             ConnectUserResponse userResponse = _mapper.Map<ConnectUserResponse>(user);
 
-            return CreatedAtAction(nameof(GetAsync), new { id = user.Id }, userResponse);
+            return Ok();
         }
 
+        // DELETE: api/Users/2
         [Authorize(Policy = "AdminOnly")]
         [HttpDelete("{iNumber}")]
-        public async Task<ActionResult> Delete(int iNumber)
+        public async Task<IActionResult> DeleteUser([FromRoute] int iNumber)
         {
-            ConnectUser user = await _em.Users.FindByKeyAsync(iNumber);
+            ConnectUser user = await _em.Users.FindByIndexAsync(iNumber);
             if (user == null) return NotFound();
 
             _em.Users.Remove(user);

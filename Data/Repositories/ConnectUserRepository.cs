@@ -8,7 +8,7 @@ namespace Connect.Data.Repositories
     {
         public ConnectUserRepository(ConnectContext context) : base(context) { }
 
-        public async Task<ConnectUser> FindByKeyAsync(int nInscription)
+        public async Task<ConnectUser> FindByIndexAsync(int nInscription)
         {
             return await _context.Users.FirstOrDefaultAsync(cu => cu.NInscription == nInscription);
         }

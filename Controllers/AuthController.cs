@@ -23,10 +23,11 @@ namespace Connect.Controllers
             _security = security;
         }
 
+        // POST: api/login
         [HttpPost("login")]
-        public async Task<ActionResult> Login([FromBody] ConnectUserLogin request)
+        public async Task<IActionResult> Login([FromBody] ConnectUserLogin request)
         {
-            ConnectUser user = await _em.Users.FindByKeyAsync(request.NInscription);
+            ConnectUser user = await _em.Users.FindByIndexAsync(request.NInscription);
 
             if (user == null || !_security.VerifyPassowrd(user, request.Password))
                 return BadRequest(new { error = "Bad Credentials" });
@@ -35,12 +36,13 @@ namespace Connect.Controllers
             return Ok(new { token });
         }
 
+        // POST: api/register
         [HttpPost("register")]
-        public async Task<ActionResult> Register([FromBody] ConnectUserRegister request)
+        public async Task<IActionResult> Register([FromBody] ConnectUserRegister request)
         {
             if (User.Identity.IsAuthenticated) return Forbid();
 
-            ConnectUser user = await _em.Users.FindByKeyAsync(request.NInscription);
+            ConnectUser user = await _em.Users.FindByIndexAsync(request.NInscription);
             if (user != null)
                 return BadRequest(new { error = "This user exist."});
 
@@ -55,7 +57,7 @@ namespace Connect.Controllers
 
             ConnectUserResponse userResponse = _mapper.Map<ConnectUserResponse>(userSave);
 
-            return CreatedAtAction("GetAsync", "Users", new { id = userSave.Id }, userResponse);
+            return CreatedAtAction("GetUser", "Users", new { id = userSave.Id }, userResponse);
         }
     }
 }
