@@ -40,5 +40,10 @@ namespace Connect.Data.Repositories
         {
             _context.Set<TEntity>().Remove(entity);
         }
+
+        public async Task<bool> ExisteAsync(ValueType id)
+        {
+            return await GetAsync(id) == null ? false : true;
+        }
     }
 }
