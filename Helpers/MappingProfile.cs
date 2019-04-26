@@ -26,6 +26,8 @@ namespace Connect.Helpers
             CreateMap<DepartmentPost, Department>();
 
             CreateMap<Course, CourseListResponse>();
+            CreateMap<Course, CourseResponse>();
+            CreateMap<CoursePost, Course>();
         }
     }
 }

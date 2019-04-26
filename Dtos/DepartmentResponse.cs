@@ -1,15 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Connect.Dtos
 {
-    public class DepartmentResponse
+    public class DepartmentResponse : DepartmentListResponse
     {
-        public int Id { get; set; }
-
-        public string Name { get; set; }
-
-        public string Abbr { get; set; }
-
+        [JsonProperty(Order = 1)]
         public ICollection<CourseListResponse> Courses { get; set; }
     }
 }
