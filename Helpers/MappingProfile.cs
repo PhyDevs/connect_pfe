@@ -28,6 +28,10 @@ namespace Connect.Helpers
             CreateMap<Course, CourseListResponse>();
             CreateMap<Course, CourseResponse>();
             CreateMap<CoursePost, Course>();
+
+            CreateMap<Message, MessageListResponse>();
+            CreateMap<Message, MessageResponse>();
+            CreateMap<MessagePost, Message>();
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Connect.Models
+namespace Connect.Dtos
 {
-    public class Message
+    public class MessageResponse
     {
         public int Id { get; set; }
 
@@ -12,10 +12,8 @@ namespace Connect.Models
 
         public bool IsPinned { get; set; }
 
-        public Guid AuthorId { get; set; }
-        public ConnectUser Author { get; set; }
-
         public int CourseId { get; set; }
-        public Course Course { get; set; }
+        
+        public ConnectUserResponse Author { get; set; }
     }
 }
