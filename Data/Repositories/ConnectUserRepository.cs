@@ -15,6 +15,24 @@ namespace Connect.Data.Repositories
             return await _context.Users.FirstOrDefaultAsync(cu => cu.NInscription == nInscription);
         }
 
+        public async Task<ConnectUser> GetEagerAsync(Guid id)
+        {
+            return await _context.Users
+                .Where(u => u.Id == id)
+                .Include(u => u.Departments)
+                    .ThenInclude(ud => ud.Department)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<ConnectUser> GetEagerAsync(int iNumber)
+        {
+            return await _context.Users
+                .Where(u => u.NInscription == iNumber)
+                .Include(u => u.Departments)
+                    .ThenInclude(ud => ud.Department)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<bool> InDepartment(Guid id, int departmentId)
         {
             ConnectUser user = await _context.Users

@@ -1,16 +1,11 @@
-﻿using Connect.Models;
-using System;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Connect.Dtos
 {
-    public class ConnectUserResponse
+    public class ConnectUserResponse : ConnectUserListResponse
     {
-        public Guid Id { get; set; }
-
-        public string FullName { get; set; }
-
-        public int NInscription { get; set; }
-
-        public string Role { get; set; }
+        [JsonProperty(Order = 1)]
+        public ICollection<DepartmentListResponse> Departments { get; set; }
     }
 }

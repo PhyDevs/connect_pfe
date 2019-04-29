@@ -14,6 +14,6 @@ namespace Connect.Dtos
 
         public int CourseId { get; set; }
         
-        public ConnectUserResponse Author { get; set; }
+        public ConnectUserListResponse Author { get; set; }
     }
 }

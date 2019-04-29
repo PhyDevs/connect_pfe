@@ -55,7 +55,7 @@ namespace Connect.Controllers
             await _em.Users.AddAsync(userSave);
             await _em.FlushAsync();
 
-            ConnectUserResponse userResponse = _mapper.Map<ConnectUserResponse>(userSave);
+            ConnectUserListResponse userResponse = _mapper.Map<ConnectUserListResponse>(userSave);
 
             return CreatedAtAction("GetUser", "Users", new { id = userSave.Id }, userResponse);
         }

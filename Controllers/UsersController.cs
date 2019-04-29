@@ -32,14 +32,14 @@ namespace Connect.Controllers
         public async Task<ActionResult> GetUsers()
         {
             IEnumerable<ConnectUser> users = await _em.Users.GetAllAsync();
-            return Ok(_mapper.Map<IEnumerable<ConnectUserResponse>>(users));
+            return Ok(_mapper.Map<IEnumerable<ConnectUserListResponse>>(users));
         }
 
         // GET: api/Users/293b3db7-7dea-4270-ba70-08d6c818495a
         [HttpGet("{id}")]
         public async Task<ActionResult<ConnectUserResponse>> GetUser([FromRoute] Guid id)
         {
-            ConnectUser user = await _em.Users.GetAsync(id);
+            ConnectUser user = await _em.Users.GetEagerAsync(id);
             if (user == null) return NotFound();
             
             return _mapper.Map<ConnectUserResponse>(user);
@@ -49,7 +49,7 @@ namespace Connect.Controllers
         [HttpGet("{iNumber:int}")]
         public async Task<ActionResult<ConnectUserResponse>> GetUser([FromRoute] int iNumber)
         {
-            ConnectUser user = await _em.Users.FindByIndexAsync(iNumber);
+            ConnectUser user = await _em.Users.GetEagerAsync(iNumber);
             if (user == null) return NotFound();
 
             return _mapper.Map<ConnectUserResponse>(user);
@@ -71,8 +71,8 @@ namespace Connect.Controllers
             if (request.FirstName != null) user.FirstName = request.FirstName;
             if (request.LastName != null) user.LastName = request.LastName;
 
-            await _em.FlushAsync();
-            ConnectUserResponse userResponse = _mapper.Map<ConnectUserResponse>(user);
+            if(request.FirstName != null || request.LastName != null)
+                await _em.FlushAsync();
 
             return Ok();
         }
