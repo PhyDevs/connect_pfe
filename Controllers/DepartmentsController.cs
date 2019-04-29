@@ -89,5 +89,15 @@ namespace Connect.Controllers
 
             return Ok();
         }
+
+        // GET: api/Departments/5/users
+        [HttpGet("{id}/users")]
+        public async Task<ActionResult> GetUsers([FromRoute] int id)
+        {
+            if (!await _em.Departments.ExisteAsync(id)) return NotFound();
+
+            IEnumerable<ConnectUser> users = await _em.Departments.GetUsersAsync(id);
+            return Ok(_mapper.Map<IEnumerable<ConnectUserListResponse>>(users));
+        }
     }
 }

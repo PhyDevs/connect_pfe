@@ -1,5 +1,6 @@
 ﻿using Connect.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,6 +21,14 @@ namespace Connect.Data.Repositories
         public async Task<Department> FindByIndexAsync(string abbr)
         {
             return await _context.Departments.FirstOrDefaultAsync(dep => dep.Abbr == abbr);
+        }
+
+        public async Task<IEnumerable<ConnectUser>> GetUsersAsync(int id)
+        {
+            return await _context.Users
+                .Where(u => u.Departments.Any(d => d.DepartmentId == id))
+                .AsNoTracking()
+                .ToListAsync();
         }
     }
 }
