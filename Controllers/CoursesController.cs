@@ -105,6 +105,18 @@ namespace Connect.Controllers
             return Ok();
         }
 
+        // GET: api/Courses/2/Messages
+        [HttpGet("{id}/messages/{offset:int=0}")]
+        public async Task<ActionResult> GetMessages([FromRoute] int id, int offset)
+        {
+            if (!await _em.Courses.ExisteAsync(id)) return NotFound();
+
+            IEnumerable<Message> messages = await _em.Courses.GetMessagesAsync(id, offset, offset + 10);
+            if (messages.Count() == 0) return NotFound();
+
+            return Ok(_mapper.Map<IEnumerable<MessageResponse>>(messages));
+        }
+
         private async Task<bool> UserHasCourse(Course course)
         {
             int.TryParse(

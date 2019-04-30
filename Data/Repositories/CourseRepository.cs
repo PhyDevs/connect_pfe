@@ -18,5 +18,17 @@ namespace Connect.Data.Repositories
                 .Include(c => c.Teacher)
                 .FirstOrDefaultAsync();
         }
+
+        public async Task<IEnumerable<Message>> GetMessagesAsync(int id, int offset = 0, int limit = 10)
+        {
+            return await _context.Messages
+                .Where(m => m.CourseId == id)
+                .OrderByDescending(m => m.DateTime)
+                .Skip(offset)
+                .Take(limit)
+                .Include(m => m.Author)
+                .AsNoTracking()
+                .ToListAsync();
+        }
     }
 }
