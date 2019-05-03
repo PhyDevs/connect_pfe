@@ -109,7 +109,10 @@ namespace Connect.Controllers
         [HttpGet("{id}/messages/{offset:int=0}")]
         public async Task<ActionResult> GetMessages([FromRoute] int id, int offset)
         {
-            if (!await _em.Courses.ExisteAsync(id)) return NotFound();
+            Course course = await _em.Courses.GetAsync(id);
+            if (course == null) return NotFound();
+
+            if (!await AllowedToGetMessagesAsync(course)) return Forbid();
 
             IEnumerable<Message> messages = await _em.Courses.GetMessagesAsync(id, offset, offset + 10);
             if (messages.Count() == 0) return NotFound();
@@ -125,13 +128,24 @@ namespace Connect.Controllers
             ConnectUser teacher = await _em.Users.FindByIndexAsync(nameId);
 
             if (teacher == null || (teacher.Role != Roles.Admin && teacher.Id != course.TeacherId))
-            {
                 return false;
-            }
             else
-            {
                 return true;
-            }
+        }
+
+        private async Task<bool> AllowedToGetMessagesAsync(Course course)
+        {
+            int.TryParse(
+                User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value,
+                out int nameId);
+            ConnectUser user = await _em.Users.FindByIndexAsync(nameId);
+
+            if (user == null) return false;
+
+            if (await _em.Users.InDepartment(user.Id, course.DepartmentId) || user.Role == Roles.Admin)
+                return true;
+
+            return false;
         }
 
     }
