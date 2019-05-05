@@ -55,6 +55,11 @@ namespace Connect
 
             });
 
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/dist";
+            });
+
             services.AddAutoMapper();
 
             services.AddScoped<IEntityManager, EntityManager>();
@@ -73,9 +78,25 @@ namespace Connect
                 app.UseHsts();
             }
 
+            app.UseCors(builder => builder.WithOrigins("https://localhost:3000")
+                                .AllowAnyMethod()
+                                .AllowAnyHeader());
+
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+
             app.UseAuthentication();
             app.UseMvc();
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ClientApp";
+                if(env.IsDevelopment())
+                {
+                    spa.UseProxyToSpaDevelopmentServer("https://localhost:3000");
+                }
+            });
         }
     }
 }
