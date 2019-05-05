@@ -1,0 +1,28 @@
+{
+  "name": "connect_pfe",
+  "version": "1.0.0",
+  "description": "spa",
+  "main": "index.html",
+  "scripts": {
+    "start": "parcel index.html --port 3000 --https",
+    "build": "parcel build index.html"
+  },
+  "repository": "git+https://github.com/PhyDevs/connect_pfe.git",
+  "keywords": [
+    "asp",
+    "react"
+  ],
+  "author": "PhyDevs",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PhyDevs/connect_pfe/issues"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.3"
+  },
+  "dependencies": {
+    "@reach/router": "^1.2.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  }
+}
