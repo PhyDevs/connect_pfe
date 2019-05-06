@@ -22,7 +22,8 @@
     },
     "plugins": [
         "react",
-        "prettier"
+        "prettier",
+        "emotion"
     ],
     "rules": {
         "react/jsx-filename-extension": [
@@ -38,12 +39,14 @@
             "error",
             {
                 "printWidth": 120,
-                "tabWidth": 4,
+                "useTabs": true,
                 "trailingComma": "es5",
-                "jsxBracketSameLine": true,
-                "singleQuote": true,
-                "semi": false
+                "singleQuote": true
             }
-        ]
+        ],
+        "emotion/jsx-import": "error",
+        "emotion/no-vanilla": "error",
+        "emotion/import-from-emotion": "error",
+        "emotion/styled-import": "error"
     }
 }
