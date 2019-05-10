@@ -22,6 +22,7 @@
     },
     "plugins": [
         "react",
+        "react-hooks",
         "prettier",
         "emotion"
     ],
@@ -35,6 +36,8 @@
                 ]
             }
         ],
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn",
         "prettier/prettier": [
             "error",
             {
