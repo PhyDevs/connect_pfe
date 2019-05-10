@@ -25,6 +25,7 @@
     "babel-eslint": "^10.0.1",
     "babel-plugin-emotion": "^10.0.9",
     "babel-plugin-transform-node-env-inline": "^0.4.3",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "eslint": "^5.3.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^4.2.0",
