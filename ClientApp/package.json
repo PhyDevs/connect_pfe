@@ -4,8 +4,8 @@
   "description": "spa",
   "main": "index.html",
   "scripts": {
-    "start": "parcel index.html --port 3000 --https",
-    "build": "parcel build index.html",
+    "start": "parcel static/index.html --port 3000 --https",
+    "build": "parcel build static/index.html",
     "lint": "eslint \"src/*.+(js|jsx)\""
   },
   "repository": "git+https://github.com/PhyDevs/connect_pfe.git",
