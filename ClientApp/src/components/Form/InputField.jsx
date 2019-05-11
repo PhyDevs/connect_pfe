@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
+import { LoginContext } from '../../providers/LoginContext';
+import colors from '../../utils/colors';
 
 const Field = styled.div`
 	position: relative;
@@ -16,24 +18,24 @@ const Field = styled.div`
 		padding: 8px 10px;
 		background-color: transparent;
 		border: 1px solid;
-		border-color: ${props => (props.notValid ? '#ea1000' : '#cbcbcb')};
+		border-color: ${props => (props.notValid ? colors.error : '#cbcbcb')};
 		outline: 0;
 		border-radius: 3px;
 		transition: all 0.1s linear;
 		z-index: 2;
 		&:focus {
 			background-color: transparent;
-			border-color: ${props => (props.notValid ? '#ea1000' : '#7300ac')};
-			box-shadow: 0 0 2px 1px ${props => (props.notValid ? '#ea1000' : '#7300ac')};
+			border-color: ${props => (props.notValid ? colors.error : colors.main)};
+			box-shadow: 0 0 2px 1px ${props => (props.notValid ? colors.error : colors.main)};
 		}
 
 		& + span {
 			position: absolute;
 			padding: 2px 8px;
-			background-color: #ffffff;
+			background-color: ${colors.light};
 			top: ${props => (props.filled ? '-12px' : '8px')};
 			left: ${props => (props.filled ? '0' : '4px')};
-			color: ${props => (props.filled ? '#7300ac' : '#434343')};
+			color: ${props => (props.filled ? colors.main : '#434343')};
 			transform: ${props => (props.filled ? 'scale(0.8)' : 'scale(1)')};
 			z-index: ${props => (props.filled ? 3 : 0)};
 			transition: all 0.1s linear;
@@ -43,7 +45,7 @@ const Field = styled.div`
 	& > span {
 		display: inline-block;
 		margin: 5px 4px 0;
-		color: #ea1000;
+		color: ${colors.error};
 		font-weight: 700;
 		font-size: 0.9rem;
 		letter-spacing: 0.2px;
@@ -53,6 +55,7 @@ const Field = styled.div`
 const InputField = ({ label, type, name, pattern, errorMsg, width }) => {
 	const [filled, setFilled] = React.useState(false);
 	const [isValid, setValid] = React.useState(true);
+	const [, setErrors] = React.useContext(LoginContext);
 
 	const ValidateValue = value => {
 		if (pattern === null) return true;
@@ -66,14 +69,16 @@ const InputField = ({ label, type, name, pattern, errorMsg, width }) => {
 	};
 
 	const HandelBlur = e => {
-		if (e.target.value.trim() !== '') {
-			setFilled(true);
+		if (e.target.value !== '') setFilled(true);
+		else setFilled(false);
 
-			if (ValidateValue(e.target.value)) setValid(true);
-			else setValid(false);
-		} else {
-			e.target.value = '';
-			setFilled(false);
+		const validRes = ValidateValue(e.target.value);
+		if (validRes && !isValid) {
+			setValid(true);
+			setErrors(prev => ({ ...prev, [name]: false }));
+		} else if (!validRes && isValid) {
+			setValid(false);
+			setErrors(prev => ({ ...prev, [name]: true }));
 		}
 	};
 
