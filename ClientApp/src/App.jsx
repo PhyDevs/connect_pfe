@@ -3,6 +3,7 @@ import React from 'react';
 import { Router, Link } from '@reach/router';
 
 const LoginPage = React.lazy(() => import('./pages/LoginPage'));
+const SignUpPage = React.lazy(() => import('./pages/SignUpPage'));
 
 const Home = () => (
 	<h1>
@@ -15,6 +16,7 @@ const App = () => (
 		<Router>
 			<Home path="/" />
 			<LoginPage path="/login" />
+			<SignUpPage path="/signup" />
 		</Router>
 	</React.Suspense>
 );
