@@ -1,14 +1,14 @@
 import React from 'react';
 import FlexContainer from '../components/Common/FlexContainer';
 import LoginForm from '../components/Form/LoginForm';
-import { LoginProvider } from '../providers/LoginContext';
+import { ValidationProvider } from '../providers/ValidationContext';
 
 const LoginPage = () => (
-	<LoginProvider>
-		<FlexContainer>
+	<FlexContainer>
+		<ValidationProvider>
 			<LoginForm title="Welcome" />
-		</FlexContainer>
-	</LoginProvider>
+		</ValidationProvider>
+	</FlexContainer>
 );
 
 export default LoginPage;

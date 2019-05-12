@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import colors from '../../utils/colors';
 import InputField from './InputField';
 import Button from '../Common/Button';
-import { LoginContext } from '../../providers/LoginContext';
+import { ValidationContext } from '../../providers/ValidationContext';
 
 const Box = styled.div`
 	width: 100%;
@@ -37,8 +37,9 @@ const BottomText = styled.div`
 `;
 
 const LoginForm = ({ title }) => {
-	const [hasErrors] = React.useContext(LoginContext);
+	const { login } = React.useContext(ValidationContext);
 	const formRef = React.useRef(null);
+	const [hasErrors] = login;
 
 	const HandelSubmit = e => {
 		e.preventDefault();
@@ -61,8 +62,8 @@ const LoginForm = ({ title }) => {
 		<Box>
 			<h1>{title}</h1>
 			<form ref={formRef} method="post" style={{ padding: '20px 0' }} onSubmit={HandelSubmit}>
-				<InputField label="Number" name="number" pattern="^\d{5}$" />
-				<InputField label="Password" name="password" type="password" pattern="^.{4,}$" />
+				<InputField label="Number" name="number" pattern="^\d{5}$" parentForm="login" />
+				<InputField label="Password" name="password" type="password" pattern="^.{4,}$" parentForm="login" />
 
 				<Button type="submit" value="Sign In" />
 			</form>

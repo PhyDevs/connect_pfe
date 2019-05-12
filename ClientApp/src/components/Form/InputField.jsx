@@ -1,15 +1,16 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import { LoginContext } from '../../providers/LoginContext';
+import { ValidationContext } from '../../providers/ValidationContext';
 import colors from '../../utils/colors';
 
 const Field = styled.div`
 	position: relative;
 	width: ${props => (props.width ? `${props.width}%` : '100%')};
 	display: ${props => (props.width === 100 ? `block` : 'inline-block')};
-	padding: ${props => (props.width === 100 ? 0 : '0 5px')};
+	padding-right: ${props => (props.pr ? props.pr : 0)};
 	margin: 15px 0 25px;
+	vertical-align: top;
 
 	input {
 		position: relative;
@@ -52,10 +53,14 @@ const Field = styled.div`
 	}
 `;
 
-const InputField = ({ label, type, name, pattern, errorMsg, width }) => {
+const InputField = ({ label, type, name, pattern, parentForm, errorMsg, width, pr }) => {
 	const [filled, setFilled] = React.useState(false);
 	const [isValid, setValid] = React.useState(true);
-	const [, setErrors] = React.useContext(LoginContext);
+	const { login, signUp } = React.useContext(ValidationContext);
+	let [setErrors, errors] = [() => {}, null];
+
+	if (parentForm === 'login') [errors, setErrors] = login;
+	else if (parentForm === 'signUp') [errors, setErrors] = signUp;
 
 	const ValidateValue = value => {
 		if (pattern === null) return true;
@@ -73,17 +78,17 @@ const InputField = ({ label, type, name, pattern, errorMsg, width }) => {
 		else setFilled(false);
 
 		const validRes = ValidateValue(e.target.value);
-		if (validRes && !isValid) {
+		if (validRes && (!isValid || errors[name])) {
 			setValid(true);
 			setErrors(prev => ({ ...prev, [name]: false }));
-		} else if (!validRes && isValid) {
+		} else if (!validRes && (isValid || !errors[name])) {
 			setValid(false);
 			setErrors(prev => ({ ...prev, [name]: true }));
 		}
 	};
 
 	return (
-		<Field filled={filled} notValid={!isValid} width={width}>
+		<Field filled={filled} notValid={!isValid} width={width} pr={pr}>
 			<label htmlFor={name}>
 				<input type={type} id={name} name={name} onFocus={HandelFocus} onBlur={HandelBlur} />
 				<span>{label}</span>
@@ -98,8 +103,10 @@ InputField.propTypes = {
 	name: PropTypes.string.isRequired,
 	type: PropTypes.string,
 	pattern: PropTypes.string,
+	parentForm: PropTypes.oneOf(['login', 'signUp']).isRequired,
 	errorMsg: PropTypes.string,
 	width: PropTypes.number,
+	pr: PropTypes.string,
 };
 
 InputField.defaultProps = {
@@ -107,6 +114,7 @@ InputField.defaultProps = {
 	pattern: null,
 	errorMsg: 'This value is not valid',
 	width: 100,
+	pr: '0',
 };
 
 export default InputField;
