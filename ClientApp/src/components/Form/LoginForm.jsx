@@ -38,10 +38,20 @@ const BottomText = styled.div`
 
 const LoginForm = ({ title }) => {
 	const [hasErrors] = React.useContext(LoginContext);
+	const formRef = React.useRef(null);
 
 	const HandelSubmit = e => {
 		e.preventDefault();
-		if (Object.values(hasErrors).indexOf(true) >= 0) return;
+		const errorsArr = Object.values(hasErrors);
+		if (errorsArr.indexOf(true) >= 0) {
+			if (formRef.current !== null) {
+				errorsArr.some((val, key) => {
+					if (val) formRef.current.elements[key].focus();
+					return val;
+				});
+			}
+			return;
+		}
 
 		// Handel Login
 		console.log('Passed');
@@ -50,7 +60,7 @@ const LoginForm = ({ title }) => {
 	return (
 		<Box>
 			<h1>{title}</h1>
-			<form method="post" style={{ padding: '20px 0' }} onSubmit={HandelSubmit}>
+			<form ref={formRef} method="post" style={{ padding: '20px 0' }} onSubmit={HandelSubmit}>
 				<InputField label="Number" name="number" pattern="^\d{5}$" />
 				<InputField label="Password" name="password" type="password" pattern="^.{4,}$" />
 
@@ -65,7 +75,11 @@ const LoginForm = ({ title }) => {
 };
 
 LoginForm.propTypes = {
-	title: PropTypes.string.isRequired,
+	title: PropTypes.string,
+};
+
+LoginForm.defaultProps = {
+	title: 'Sign in',
 };
 
 export default LoginForm;
