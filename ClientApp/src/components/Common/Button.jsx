@@ -5,9 +5,9 @@ import colors from '../../utils/colors';
 
 const Btn = styled.button`
 	position: relative;
-	width: 100%;
+	width: ${props => props.width};
 	margin: 4px 0 25px;
-	padding: 11px 8px;
+	padding: 11px 18px;
 	font-size: 1.05rem;
 	font-weight: 700;
 	text-align: center;
@@ -37,8 +37,8 @@ const Btn = styled.button`
 	}
 `;
 
-const Button = ({ type, value, bg }) => (
-	<Btn type={type} bg={bg}>
+const Button = ({ type, value, width, bg }) => (
+	<Btn type={type} width={width} bg={bg}>
 		{value}
 	</Btn>
 );
@@ -46,11 +46,13 @@ const Button = ({ type, value, bg }) => (
 Button.propTypes = {
 	type: PropTypes.string,
 	value: PropTypes.string.isRequired,
+	width: PropTypes.string,
 	bg: PropTypes.string,
 };
 
 Button.defaultProps = {
 	type: 'button',
+	width: '100%',
 	bg: colors.main,
 };
 
