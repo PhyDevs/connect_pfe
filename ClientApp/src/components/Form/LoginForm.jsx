@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import colors from '../../utils/colors';
 import InputField from './InputField';
 import Button from '../Common/Button';
-import { ValidationContext } from '../../providers/ValidationContext';
+import { useValidationContext } from '../../providers/ValidationContext';
 
 const Box = styled.div`
 	width: 100%;
@@ -37,20 +37,17 @@ const BottomText = styled.div`
 `;
 
 const LoginForm = ({ title }) => {
-	const { login } = React.useContext(ValidationContext);
-	const formRef = React.useRef(null);
-	const [hasErrors] = login;
+	const [hasErrors] = useValidationContext('login');
 
 	const HandelSubmit = e => {
 		e.preventDefault();
+		const formRef = e.target;
 		const errorsArr = Object.values(hasErrors);
-		if (errorsArr.indexOf(true) >= 0) {
-			if (formRef.current !== null) {
-				errorsArr.some((val, key) => {
-					if (val) formRef.current.elements[key].focus();
-					return val;
-				});
-			}
+		if (errorsArr.indexOf(true) >= 0 && formRef.elements.length > 0) {
+			errorsArr.some((val, key) => {
+				if (val) formRef.elements[key].focus();
+				return val;
+			});
 			return;
 		}
 
@@ -61,7 +58,7 @@ const LoginForm = ({ title }) => {
 	return (
 		<Box>
 			<h1>{title}</h1>
-			<form ref={formRef} method="post" style={{ padding: '20px 0' }} onSubmit={HandelSubmit}>
+			<form method="post" style={{ padding: '20px 0' }} onSubmit={HandelSubmit}>
 				<InputField label="Number" name="number" pattern="^\d{5}$" parentForm="login" />
 				<InputField label="Password" name="password" type="password" pattern="^.{4,}$" parentForm="login" />
 

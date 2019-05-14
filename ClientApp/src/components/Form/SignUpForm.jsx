@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import InputField from './InputField';
 import Button from '../Common/Button';
-import { ValidationContext } from '../../providers/ValidationContext';
+import { useValidationContext } from '../../providers/ValidationContext';
 import colors from '../../utils/colors';
 
 const Box = styled.div`
@@ -37,20 +37,18 @@ const BottomText = styled.div`
 `;
 
 const SignUpForm = ({ title }) => {
-	const { signUp } = React.useContext(ValidationContext);
-	const formRef = React.useRef();
-	const [hasErrors] = signUp;
+	const [hasErrors] = useValidationContext('signUp');
 
 	const HandelSubmit = e => {
 		e.preventDefault();
 		const errorsArr = Object.values(hasErrors);
-		if (errorsArr.indexOf(true) >= 0) {
-			if (formRef.current !== null) {
-				errorsArr.some((val, key) => {
-					if (val) formRef.current.elements[key].focus();
-					return val;
-				});
-			}
+		const formRef = e.target;
+		if (errorsArr.indexOf(true) >= 0 && formRef.elements.length > 0) {
+			errorsArr.some((val, key) => {
+				if (val) formRef.elements[key].focus();
+				return val;
+			});
+
 			return;
 		}
 
@@ -61,7 +59,7 @@ const SignUpForm = ({ title }) => {
 	return (
 		<Box>
 			<h1>{title}</h1>
-			<form ref={formRef} method="post" style={{ padding: '20px 0 0' }} onSubmit={HandelSubmit}>
+			<form method="post" style={{ padding: '20px 0 0' }} onSubmit={HandelSubmit}>
 				<InputField label="First name" name="firstName" pattern="^.{2,}$" parentForm="signUp" width={52} pr="4%" />
 				<InputField label="Last name" name="lastName" pattern="^.{2,}$" parentForm="signUp" width={48} />
 				<InputField label="Number" name="number" pattern="^\d{5}$" parentForm="signUp" />

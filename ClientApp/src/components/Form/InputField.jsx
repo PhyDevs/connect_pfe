@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import { ValidationContext } from '../../providers/ValidationContext';
+import { useValidationContext } from '../../providers/ValidationContext';
 import colors from '../../utils/colors';
 
 const Field = styled.div`
@@ -56,11 +56,7 @@ const Field = styled.div`
 const InputField = ({ label, type, name, pattern, parentForm, errorMsg, width, pr }) => {
 	const [filled, setFilled] = React.useState(false);
 	const [isValid, setValid] = React.useState(true);
-	const { login, signUp } = React.useContext(ValidationContext);
-	let [setErrors, errors] = [() => {}, null];
-
-	if (parentForm === 'login') [errors, setErrors] = login;
-	else if (parentForm === 'signUp') [errors, setErrors] = signUp;
+	const [errors, setErrors] = useValidationContext(parentForm);
 
 	const ValidateValue = value => {
 		if (pattern === null) return true;
