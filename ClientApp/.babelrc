@@ -1,6 +1,11 @@
 {
     "presets": ["@babel/env", "@babel/react"],
-    "plugins": ["transform-node-env-inline", "emotion", "react-hot-loader/babel"],
+    "plugins": [
+        "transform-node-env-inline",
+        "emotion",
+        "react-hot-loader/babel",
+        "@babel/plugin-transform-runtime"
+    ],
     "env": {
         "production": {
             "plugins": [
