@@ -56,8 +56,9 @@ namespace Connect.Controllers
             await _em.FlushAsync();
 
             ConnectUserListResponse userResponse = _mapper.Map<ConnectUserListResponse>(userSave);
+            string token = _security.GenerateToken(userSave);
 
-            return CreatedAtAction("GetUser", "Users", new { id = userSave.Id }, userResponse);
+            return CreatedAtAction("GetUser", "Users", new { id = userSave.Id }, new {user = userResponse, token = token});
         }
     }
 }
