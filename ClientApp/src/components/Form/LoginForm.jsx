@@ -1,45 +1,18 @@
 import React from 'react';
-import { Link } from '@reach/router';
-import styled from '@emotion/styled';
+import { Link, navigate } from '@reach/router';
 import PropTypes from 'prop-types';
-import colors from '../../utils/colors';
 import InputField from './InputField';
 import Button from '../Common/Button';
+import { Box, BottomText, FormError } from './Elements';
 import { useValidationContext } from '../../providers/ValidationContext';
-
-const Box = styled.div`
-	width: 100%;
-	max-width: 350px;
-	margin: 10px 15px;
-	padding: 40px 35px;
-	background-color: ${colors.light};
-	border-radius: 6px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12), 0 2px 10px rgba(0, 0, 0, 0.08);
-
-	h1 {
-		margin: 0 4px 40px;
-		padding: 0;
-		text-align: center;
-		font-size: 2rem;
-		font-weight: 700;
-	}
-`;
-
-const BottomText = styled.div`
-	margin: 30px 0 0;
-	text-align: center;
-
-	a {
-		color: inherit;
-		font-weight: 700;
-		text-decoration: none;
-	}
-`;
+import { usePost } from '../../utils/use-request';
+import { authenticate } from '../../utils/authenticator';
 
 const LoginForm = ({ title }) => {
 	const [hasErrors] = useValidationContext('login');
+	const [{ loading, errors }, send] = usePost();
 
-	const HandelSubmit = e => {
+	const HandelSubmit = async e => {
 		e.preventDefault();
 		const formRef = e.target;
 		const errorsArr = Object.values(hasErrors);
@@ -51,21 +24,35 @@ const LoginForm = ({ title }) => {
 			return;
 		}
 
-		// Handel Login
-		console.log('Passed');
+		const [number, password] = formRef.elements;
+		const { data } = await send('login', {
+			NInscription: number.value,
+			password: password.value,
+		});
+
+		if (data !== null) {
+			authenticate(data);
+			navigate('/');
+		}
 	};
 
 	return (
-		<Box>
+		<Box width="350px" padding="40px 35px">
 			<h1>{title}</h1>
-			<form method="post" style={{ padding: '20px 0' }} onSubmit={HandelSubmit}>
+			<form method="post" style={{ padding: '20px 0 0' }} onSubmit={HandelSubmit}>
 				<InputField label="Number" name="number" pattern="^\d{5}$" parentForm="login" />
 				<InputField label="Password" name="password" type="password" pattern="^.{4,}$" parentForm="login" />
 
-				<Button type="submit" value="Sign In" />
+				<Button type="submit" value="Sign In" loading={loading} />
 			</form>
 
-			<BottomText>
+			{!!errors && (
+				<FormError>
+					<span>{errors.error || 'Error on submiting'}</span>
+				</FormError>
+			)}
+
+			<BottomText style={{ margin: '30px 0 0', textAlign: 'center' }}>
 				Don&lsquo;t have an account? <Link to="/signup">Sign Up</Link>
 			</BottomText>
 		</Box>

@@ -1,63 +1,45 @@
 import React from 'react';
-import { Link } from '@reach/router';
-import styled from '@emotion/styled';
+import { Link, navigate } from '@reach/router';
 import PropTypes from 'prop-types';
 import InputField from './InputField';
 import Button from '../Common/Button';
+import { Box, BottomText, FormError } from './Elements';
 import { useValidationContext } from '../../providers/ValidationContext';
-import colors from '../../utils/colors';
-
-const Box = styled.div`
-	width: 100%;
-	max-width: 500px;
-	margin: 10px 15px;
-	padding: 40px 35px 26px;
-	background-color: ${colors.light};
-	border-radius: 6px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12), 0 2px 10px rgba(0, 0, 0, 0.08);
-
-	h1 {
-		margin: 0 4px 40px;
-		padding: 0;
-		text-align: center;
-		font-size: 2rem;
-		font-weight: 700;
-	}
-`;
-
-const BottomText = styled.div`
-	float: right;
-	margin: 16px 0 0;
-
-	a {
-		color: inherit;
-		font-weight: 700;
-		text-decoration: none;
-	}
-`;
+import { usePost } from '../../utils/use-request';
+import { authenticate } from '../../utils/authenticator';
 
 const SignUpForm = ({ title }) => {
 	const [hasErrors] = useValidationContext('signUp');
+	const [{ loading, errors }, send] = usePost();
 
-	const HandelSubmit = e => {
+	const HandelSubmit = async e => {
 		e.preventDefault();
-		const errorsArr = Object.values(hasErrors);
 		const formRef = e.target;
+		const errorsArr = Object.values(hasErrors);
 		if (errorsArr.indexOf(true) >= 0 && formRef.elements.length > 0) {
 			errorsArr.some((val, key) => {
 				if (val) formRef.elements[key].focus();
 				return val;
 			});
-
 			return;
 		}
 
-		// Handel Sign Up
-		console.log('Passed');
+		const [firstname, lastname, number, password] = formRef.elements;
+		const { data } = await send('register', {
+			firstname: firstname.value,
+			lastname: lastname.value,
+			NInscription: number.value,
+			password: password.value,
+		});
+
+		if (data !== null) {
+			authenticate(data);
+			navigate('/');
+		}
 	};
 
 	return (
-		<Box>
+		<Box width="500px" padding="40px 35px 26px">
 			<h1>{title}</h1>
 			<form method="post" style={{ padding: '20px 0 0' }} onSubmit={HandelSubmit}>
 				<InputField label="First name" name="firstName" pattern="^.{2,}$" parentForm="signUp" width={52} pr="4%" />
@@ -65,11 +47,17 @@ const SignUpForm = ({ title }) => {
 				<InputField label="Number" name="number" pattern="^\d{5}$" parentForm="signUp" />
 				<InputField label="Password" name="password" type="password" pattern="^.{4,}$" parentForm="signUp" />
 
-				<Button type="submit" value="Sign Up" width="auto" />
+				<Button type="submit" value="Sign Up" width="auto" loading={loading} />
 
-				<BottomText>
+				<BottomText style={{ float: 'right', margin: '16px 0 0' }}>
 					<Link to="/login">Sign in instead</Link>
 				</BottomText>
+
+				{!!errors && (
+					<FormError>
+						<span>{errors.error || 'Error on submiting'}</span>
+					</FormError>
+				)}
 			</form>
 		</Box>
 	);
