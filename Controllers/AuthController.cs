@@ -32,8 +32,10 @@ namespace Connect.Controllers
             if (user == null || !_security.VerifyPassowrd(user, request.Password))
                 return BadRequest(new { error = "Bad Credentials" });
 
+            ConnectUserListResponse userResponse = _mapper.Map<ConnectUserListResponse>(user);
             string token = _security.GenerateToken(user);
-            return Ok(new { token });
+
+            return Ok(new {user = userResponse, token = token});
         }
 
         // POST: api/register
