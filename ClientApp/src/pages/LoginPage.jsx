@@ -1,4 +1,5 @@
 import React from 'react';
+import asPublic from '../components/HOCs/asPublic';
 import FlexContainer from '../components/Common/FlexContainer';
 import LoginForm from '../components/Form/LoginForm';
 import { ValidationProvider } from '../providers/ValidationContext';
@@ -11,4 +12,4 @@ const LoginPage = () => (
 	</FlexContainer>
 );
 
-export default LoginPage;
+export default asPublic(LoginPage);
