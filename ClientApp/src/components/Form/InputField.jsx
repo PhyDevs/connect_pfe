@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from './Elements';
+import { useThemeContext } from '../../providers/ThemeContext';
 import { useValidationContext } from '../../providers/ValidationContext';
 
 const InputField = ({ label, type, name, pattern, parentForm, errorMsg, width, pr }) => {
 	const [filled, setFilled] = React.useState(false);
 	const [isValid, setValid] = React.useState(true);
+	const [isDark] = useThemeContext();
 	const [errors, setErrors] = useValidationContext(parentForm);
 
 	const ValidateValue = value => {
@@ -34,7 +36,7 @@ const InputField = ({ label, type, name, pattern, parentForm, errorMsg, width, p
 	};
 
 	return (
-		<Field filled={filled} notValid={!isValid} width={width} pr={pr}>
+		<Field filled={filled} notValid={!isValid} width={width} pr={pr} dark={isDark}>
 			<label htmlFor={name}>
 				<input type={type} id={name} name={name} onFocus={HandelFocus} onBlur={HandelBlur} />
 				<span>{label}</span>

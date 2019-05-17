@@ -1,24 +1,22 @@
 import { hot } from 'react-hot-loader';
 import React from 'react';
-import { Router, Link } from '@reach/router';
+import { Router } from '@reach/router';
+import { ThemeProvider } from './providers/ThemeContext';
 
-const LoginPage = React.lazy(() => import('./pages/LoginPage'));
-const SignUpPage = React.lazy(() => import('./pages/SignUpPage'));
-
-const Home = () => (
-	<h1>
-		Home Page <Link to="/login">Login</Link>
-	</h1>
-);
+const Home = React.lazy(() => import('./pages/HomePage'));
+const Login = React.lazy(() => import('./pages/LoginPage'));
+const SignUp = React.lazy(() => import('./pages/SignUpPage'));
 
 const App = () => (
-	<React.Suspense fallback="loading ...">
-		<Router>
-			<Home path="/" />
-			<LoginPage path="/login" />
-			<SignUpPage path="/signup" />
-		</Router>
-	</React.Suspense>
+	<ThemeProvider>
+		<React.Suspense fallback="loading ...">
+			<Router>
+				<Home path="/" />
+				<Login path="/login" />
+				<SignUp path="/signup" />
+			</Router>
+		</React.Suspense>
+	</ThemeProvider>
 );
 
 export default hot(module)(App);

@@ -4,11 +4,13 @@ import PropTypes from 'prop-types';
 import InputField from './InputField';
 import Button from '../Common/Button';
 import { Box, BottomText, FormError } from './Elements';
+import { useThemeContext } from '../../providers/ThemeContext';
 import { useValidationContext } from '../../providers/ValidationContext';
 import { usePost } from '../../utils/use-request';
 import { authenticate } from '../../utils/authenticator';
 
 const LoginForm = ({ title }) => {
+	const [isDark] = useThemeContext();
 	const [hasErrors] = useValidationContext('login');
 	const [{ loading, errors }, send] = usePost();
 
@@ -37,7 +39,7 @@ const LoginForm = ({ title }) => {
 	};
 
 	return (
-		<Box width="350px" padding="40px 35px">
+		<Box width="350px" padding="40px 35px" dark={isDark}>
 			<h1>{title}</h1>
 			<form method="post" style={{ padding: '20px 0 0' }} onSubmit={HandelSubmit}>
 				<InputField label="Number" name="number" pattern="^\d{5}$" parentForm="login" />
@@ -52,7 +54,7 @@ const LoginForm = ({ title }) => {
 				</FormError>
 			)}
 
-			<BottomText style={{ margin: '30px 0 0', textAlign: 'center' }}>
+			<BottomText dark={isDark} style={{ margin: '30px 0 0', textAlign: 'center' }}>
 				Don&lsquo;t have an account? <Link to="/signup">Sign Up</Link>
 			</BottomText>
 		</Box>

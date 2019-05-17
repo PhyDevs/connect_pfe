@@ -27,6 +27,7 @@
         "emotion"
     ],
     "rules": {
+        "no-nested-ternary":"off",
         "react/jsx-filename-extension": [
             1,
             {

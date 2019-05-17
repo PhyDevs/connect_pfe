@@ -15,6 +15,7 @@ export const Field = styled.div`
 		font-size: 1.12rem;
 		padding: 8px 10px;
 		background-color: transparent;
+		color: ${props => (props.dark ? colors.textDark : colors.textLight)};
 		border: 1px solid;
 		border-color: ${props => (props.notValid ? colors.error : '#cbcbcb')};
 		outline: 0;
@@ -30,10 +31,10 @@ export const Field = styled.div`
 		& + span {
 			position: absolute;
 			padding: 2px 8px;
-			background-color: ${colors.light};
+			background-color: ${props => (props.dark ? colors.dark : colors.light)};
 			top: ${props => (props.filled ? '-12px' : '8px')};
 			left: ${props => (props.filled ? '0' : '4px')};
-			color: ${props => (props.filled ? colors.main : '#434343')};
+			color: ${props => (props.filled ? colors.main : props.dark ? colors.textDark : colors.textLight)};
 			transform: ${props => (props.filled ? 'scale(0.8)' : 'scale(1)')};
 			z-index: ${props => (props.filled ? 3 : 0)};
 			transition: all 0.1s linear;
@@ -55,13 +56,14 @@ export const Box = styled.div`
 	max-width: ${props => (props.width ? props.width : '100%')};
 	padding: ${props => (props.padding ? props.padding : '20px')};
 	margin: 10px 15px;
-	background-color: ${colors.light};
+	background-color: ${props => (props.dark ? colors.dark : colors.light)};
 	border-radius: 6px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12), 0 2px 10px rgba(0, 0, 0, 0.08);
 
 	h1 {
 		margin: 0 4px 40px;
 		padding: 0;
+		color: ${props => (props.dark ? colors.textDark : colors.textLight)};
 		text-align: center;
 		font-size: 2rem;
 		font-weight: 700;
@@ -69,6 +71,7 @@ export const Box = styled.div`
 `;
 
 export const BottomText = styled.div`
+	color: ${props => (props.dark ? colors.textDark : colors.textLight)};
 	a {
 		color: inherit;
 		font-weight: 700;
@@ -84,6 +87,7 @@ export const FormError = styled.p`
 	font-weight: 700;
 	text-align: center;
 	overflow: hidden;
+	color: ${colors.error};
 	border: 2px solid ${colors.error};
 	border-radius: 4px;
 
