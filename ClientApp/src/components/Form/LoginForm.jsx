@@ -42,9 +42,21 @@ const LoginForm = ({ title }) => {
 		<Box width="350px" padding="40px 35px" dark={isDark}>
 			<h1>{title}</h1>
 			<form method="post" style={{ padding: '20px 0 0' }} onSubmit={HandelSubmit}>
-				<InputField label="Number" name="number" pattern="^\d{5}$" parentForm="login" />
-				<InputField label="Password" name="password" type="password" pattern="^.{4,}$" parentForm="login" />
-
+				<InputField
+					label="Number"
+					name="number"
+					pattern="^\d{5}$"
+					errorMsg="Use a number between 10000 and 99999"
+					parentForm="login"
+				/>
+				<InputField
+					label="Password"
+					name="password"
+					type="password"
+					pattern="^.{4,}$"
+					errorMsg="Use 4 characters or more"
+					parentForm="login"
+				/>
 				<Button type="submit" value="Sign In" loading={loading} />
 			</form>
 

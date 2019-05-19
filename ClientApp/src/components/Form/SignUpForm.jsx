@@ -44,10 +44,38 @@ const SignUpForm = ({ title }) => {
 		<Box width="500px" padding="40px 35px 26px" dark={isDark}>
 			<h1>{title}</h1>
 			<form method="post" style={{ padding: '20px 0 0' }} onSubmit={HandelSubmit}>
-				<InputField label="First name" name="firstName" pattern="^.{2,}$" parentForm="signUp" width={52} pr="4%" />
-				<InputField label="Last name" name="lastName" pattern="^.{2,}$" parentForm="signUp" width={48} />
-				<InputField label="Number" name="number" pattern="^\d{5}$" parentForm="signUp" />
-				<InputField label="Password" name="password" type="password" pattern="^.{4,}$" parentForm="signUp" />
+				<InputField
+					label="First name"
+					name="firstName"
+					pattern="^.{3,}$"
+					errorMsg="Use 3 characters or more"
+					parentForm="signUp"
+					width={52}
+					pr="4%"
+				/>
+				<InputField
+					label="Last name"
+					name="lastName"
+					pattern="^.{3,}$"
+					errorMsg="Use 3 characters or more"
+					parentForm="signUp"
+					width={48}
+				/>
+				<InputField
+					label="Number"
+					name="number"
+					pattern="^\d{5}$"
+					errorMsg="Use a number between 10000 and 99999"
+					parentForm="signUp"
+				/>
+				<InputField
+					label="Password"
+					name="password"
+					type="password"
+					pattern="^.{4,}$"
+					errorMsg="Use 4 characters or more"
+					parentForm="signUp"
+				/>
 
 				<Button type="submit" value="Sign Up" width="auto" loading={loading} />
 
