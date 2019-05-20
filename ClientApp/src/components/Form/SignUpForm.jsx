@@ -85,7 +85,11 @@ const SignUpForm = ({ title }) => {
 
 				{!!errors && (
 					<FormError>
-						<span>{errors.error || 'Error on submiting'}</span>
+						<span>
+							{errors.error ||
+								(!!errors[Object.keys(errors)[0]] && errors[Object.keys(errors)[0]][0]) ||
+								'Error on submiting'}
+						</span>
 					</FormError>
 				)}
 			</form>

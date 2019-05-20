@@ -19,7 +19,7 @@ const Navigation = React.memo(({ departmentId }) => {
 			navigate('/login');
 		} else {
 			const { data: res } = await getUser(`users/${id}`);
-			if (res !== null) {
+			if (res !== null && res.departments.length > 0) {
 				const depId = departmentId !== null ? departmentId : res.departments[0].id;
 				getDepartment(`departments/${depId}`);
 			}
@@ -38,6 +38,7 @@ const Navigation = React.memo(({ departmentId }) => {
 				loading={coursesLoading}
 				departmentName={!department ? null : department.name}
 				courses={!department ? null : department.courses}
+				hasDepartment={!!user && user.departments.length > 0}
 			/>
 		</div>
 	);
