@@ -5,7 +5,15 @@ const ThemeContext = React.createContext();
 
 const ThemeProvider = ({ children }) => {
 	const time = new Date().getHours();
-	const [dark, setDark] = React.useState(!(time <= 18 && time > 6));
+	let isDark;
+	try {
+		const value = localStorage.getItem('dark');
+		isDark = !value ? undefined : value === 'true';
+	} finally {
+		if (isDark === undefined) isDark = !(time <= 18 && time > 6);
+	}
+
+	const [dark, setDark] = React.useState(isDark);
 
 	const state = React.useMemo(
 		() => ({
@@ -23,7 +31,13 @@ const useThemeContext = () => {
 	if (context === undefined) throw Error('useThemeContext must be used inside ThemeProvider');
 
 	const { dark, setDark } = context;
-	const toggleDark = React.useCallback(() => setDark(d => !d), [setDark]);
+	const toggleDark = React.useCallback(() => {
+		try {
+			localStorage.setItem('dark', !dark);
+		} finally {
+			setDark(d => !d);
+		}
+	}, [dark, setDark]);
 
 	return [dark, toggleDark];
 };
