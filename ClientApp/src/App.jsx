@@ -12,6 +12,8 @@ const App = () => (
 		<React.Suspense fallback="loading ...">
 			<Router>
 				<Home path="/" />
+				<Home path="/:departmentId" />
+				<Home path="/:departmentId/:courseId" />
 				<Login path="/login" />
 				<SignUp path="/signup" />
 			</Router>
