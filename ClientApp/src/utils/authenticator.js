@@ -31,3 +31,14 @@ export const logout = () => {
 		throw Error("localStorage isn't accessible");
 	}
 };
+
+export const getUserInfo = () => {
+	try {
+		const token = localStorage.getItem(tokenKey);
+		const id = localStorage.getItem(idKey);
+		const role = localStorage.getItem(roleKey);
+		return { token, id, role };
+	} catch {
+		throw Error("localStorage isn't accessible");
+	}
+};
