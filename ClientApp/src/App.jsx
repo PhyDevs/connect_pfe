@@ -6,6 +6,7 @@ import { ThemeProvider } from './providers/ThemeContext';
 const Home = React.lazy(() => import('./pages/HomePage'));
 const Login = React.lazy(() => import('./pages/LoginPage'));
 const SignUp = React.lazy(() => import('./pages/SignUpPage'));
+const NotFound = React.lazy(() => import('./pages/NotFound'));
 
 const App = () => (
 	<ThemeProvider>
@@ -16,6 +17,7 @@ const App = () => (
 				<Home path="/:departmentId/:courseId" />
 				<Login path="/login" />
 				<SignUp path="/signup" />
+				<NotFound default />
 			</Router>
 		</React.Suspense>
 	</ThemeProvider>
