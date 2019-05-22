@@ -12,7 +12,7 @@ const Courses = React.memo(({ dark, loading, departmentName, courses, hasDepartm
 					? 'Loading ...'
 					: courses.map(course => (
 							<li key={course.id}>
-								<Link to={`/${course.departmentId}/${course.id}`}># {course.name}</Link>
+								<Link to={`/${course.departmentId}/${course.id}`}>{course.name}</Link>
 							</li>
 					  ))}
 			</ul>
