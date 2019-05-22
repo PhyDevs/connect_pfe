@@ -36,7 +36,8 @@ const Navigation = React.memo(({ departmentId, uri }) => {
 				}
 			}
 		}
-	}, [departmentId, getDepartment, getUser, setUser, uri, userName]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [departmentId, getDepartment, getUser, setUser]);
 
 	React.useEffect(() => {
 		fetchData();

@@ -49,7 +49,7 @@ const Title = styled.div`
 	}
 `;
 //
-const Welcome = () => {
+const Welcome = React.memo(() => {
 	const [isDark] = useThemeContext();
 	const {
 		state: { user },
@@ -63,6 +63,6 @@ const Welcome = () => {
 			</Title>
 		</Wrapper>
 	);
-};
+});
 
 export default Welcome;
