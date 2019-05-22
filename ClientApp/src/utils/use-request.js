@@ -73,6 +73,8 @@ const useFetch = () => {
 			if (!err.response || err.response.status === 401) {
 				logout();
 				navigate('/login');
+			} else if (err.response.status === 404 || err.response.status === 400) {
+				return 404;
 			}
 		}
 

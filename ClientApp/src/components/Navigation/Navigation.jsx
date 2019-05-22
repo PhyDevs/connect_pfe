@@ -3,12 +3,17 @@ import { navigate } from '@reach/router';
 import PropTypes from 'prop-types';
 import Courses from './Courses';
 import Departments from './Departments';
+import { useDataContext } from '../../providers/DataContext';
 import { useThemeContext } from '../../providers/ThemeContext';
 import { useFetch } from '../../utils/use-request';
 import { getUserInfo, logout } from '../../utils/authenticator';
 
-const Navigation = React.memo(({ departmentId }) => {
+const Navigation = React.memo(({ departmentId, uri }) => {
 	const [isDark] = useThemeContext();
+	const {
+		state: { user: userName },
+		setUser,
+	} = useDataContext();
 	const [{ loading: depsLoading, data: user }, getUser] = useFetch();
 	const [{ loading: coursesLoading, data: department }, getDepartment] = useFetch();
 
@@ -20,11 +25,18 @@ const Navigation = React.memo(({ departmentId }) => {
 		} else {
 			const { data: res } = await getUser(`users/${id}`);
 			if (res !== null && res.departments.length > 0) {
+				if (!userName) {
+					setUser(res.fullName);
+				}
 				const depId = departmentId !== null ? departmentId : res.departments[0].id;
-				getDepartment(`departments/${depId}`);
+				const depRes = await getDepartment(`departments/${depId}`);
+				if (depRes === 404) {
+					const state = { notFound: true };
+					navigate(uri, { state, replace: true });
+				}
 			}
 		}
-	}, [departmentId, getDepartment, getUser]);
+	}, [departmentId, getDepartment, getUser, setUser, uri, userName]);
 
 	React.useEffect(() => {
 		fetchData();
@@ -46,10 +58,12 @@ const Navigation = React.memo(({ departmentId }) => {
 
 Navigation.propTypes = {
 	departmentId: PropTypes.string,
+	uri: PropTypes.string,
 };
 
 Navigation.defaultProps = {
 	departmentId: null,
+	uri: null,
 };
 
 export default Navigation;
