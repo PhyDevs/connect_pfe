@@ -1,38 +1,36 @@
+/* eslint-disable react/destructuring-assignment */
 import React from 'react';
-import { Link } from '@reach/router';
 import PropTypes from 'prop-types';
+import NotFound from './NotFound';
 import asPrivate from '../components/HOCs/asPrivate';
-import { useThemeContext } from '../providers/ThemeContext';
+import { DataProvider } from '../providers/DataContext';
 import Navigation from '../components/Navigation/Navigation';
-import colors from '../utils/colors';
+import Welcome from '../components/Extra/Welcome';
 
-const Home = ({ departmentId, courseId }) => {
-	const [isDark, toggleDark] = useThemeContext();
-
-	return (
-		<div style={{ display: 'flex' }}>
-			<Navigation departmentId={departmentId} courseId={courseId} />
-			<div style={{ flexGrow: 1, textAlign: 'center', background: isDark ? colors.dark : colors.light }}>
-				<h1>
-					Home Page <Link to="/login">Login</Link>
-				</h1>
-				<h2>{isDark ? 'dark' : 'light'}</h2>
-				<button type="button" onClick={toggleDark}>
-					click Me
-				</button>
+const Home = props => {
+	// eslint-disable-next-line react/prop-types
+	return props.location.state && props.location.state.notFound ? (
+		<NotFound />
+	) : (
+		<DataProvider>
+			<div style={{ display: 'flex' }}>
+				<Navigation uri={props.uri} departmentId={props.departmentId} courseId={props.courseId} />
+				<Welcome />
 			</div>
-		</div>
+		</DataProvider>
 	);
 };
 
 Home.propTypes = {
 	departmentId: PropTypes.string,
 	courseId: PropTypes.string,
+	uri: PropTypes.string,
 };
 
 Home.defaultProps = {
 	departmentId: null,
 	courseId: null,
+	uri: null,
 };
 
 export default asPrivate(Home);
