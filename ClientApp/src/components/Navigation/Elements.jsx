@@ -53,6 +53,8 @@ export const CoursesList = styled.nav`
 	min-height: 460px;
 	overflow: auto;
 	padding: 35px 15px 20px;
+	border-right: 1px solid;
+	border-color: ${props => (props.dark ? '#5b5b5b' : '#c7c7c7')};
 	color: ${props => (props.dark ? colors.textDark : colors.textLight)};
 	background-color: ${props => (props.dark ? colors.secondDark : colors.secondLight)};
 

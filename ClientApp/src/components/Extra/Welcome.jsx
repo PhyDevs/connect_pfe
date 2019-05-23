@@ -6,10 +6,10 @@ import colors from '../../utils/colors';
 
 const Wrapper = styled.section`
 	display: flex;
+	height: calc(100% - 52px);
 	justify-content: center;
 	align-items: center;
-	flex-grow: 1;
-	background: ${props => (props.isDark ? colors.dark : colors.light)};
+	background-color: ${props => (props.isDark ? colors.dark : colors.light)};
 `;
 
 const Title = styled.div`
@@ -19,6 +19,7 @@ const Title = styled.div`
 		margin-bottom: 10px;
 		font-size: 4.5rem;
 		text-transform: capitalize;
+		color: ${props => (props.isDark ? colors.textDark : colors.textLight)};
 	}
 	h3 {
 		position: relative;
