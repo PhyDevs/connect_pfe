@@ -13,6 +13,11 @@ const ThemeProvider = ({ children }) => {
 		if (isDark === undefined) isDark = !(time <= 18 && time > 6);
 	}
 
+	React.useEffect(() => {
+		if (isDark) document.body.classList.add('dark');
+		else document.body.classList.remove('dark');
+	}, [isDark]);
+
 	const [dark, setDark] = React.useState(isDark);
 
 	const state = React.useMemo(
