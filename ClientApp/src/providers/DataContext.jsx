@@ -6,6 +6,7 @@ const DataContext = React.createContext();
 const DataProvider = ({ children }) => {
 	const [state, setState] = React.useState({
 		user: null,
+		currentDepartment: null,
 		currentCourse: null,
 	});
 
@@ -25,6 +26,13 @@ const useDataContext = () => {
 		state: [state, setState],
 	} = context;
 
+	const setDepartment = React.useCallback(
+		department => {
+			setState(prevState => ({ ...prevState, currentDepartment: department }));
+		},
+		[setState]
+	);
+
 	const setUser = React.useCallback(
 		name => {
 			setState(prevState => ({ ...prevState, user: name }));
@@ -39,7 +47,7 @@ const useDataContext = () => {
 		[setState]
 	);
 
-	return { state, setUser, setCourse };
+	return { state, setUser, setDepartment, setCourse };
 };
 
 export { DataProvider, useDataContext };

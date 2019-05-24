@@ -78,11 +78,13 @@ const Header = () => {
 					>
 						<i className="icon-dark" />
 					</IconButton>
-
+				</li>
+				<li>
 					<IconButton type="button" dark={isDark}>
 						<i className="icon-settings" />
 					</IconButton>
-
+				</li>
+				<li>
 					<IconButton
 						type="button"
 						dark={isDark}

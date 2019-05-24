@@ -6,7 +6,7 @@ import colors from '../../utils/colors';
 
 const Wrapper = styled.section`
 	display: flex;
-	height: calc(100% - 52px);
+	flex-grow: 1;
 	justify-content: center;
 	align-items: center;
 	background-color: ${props => (props.isDark ? colors.dark : colors.light)};
@@ -49,7 +49,7 @@ const Title = styled.div`
 		}
 	}
 `;
-//
+
 const Welcome = React.memo(() => {
 	const [isDark] = useThemeContext();
 	const {

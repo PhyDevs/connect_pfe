@@ -13,6 +13,7 @@ const Navigation = React.memo(({ departmentId, uri }) => {
 	const {
 		state: { user: userName },
 		setUser,
+		setDepartment,
 	} = useDataContext();
 	const [{ loading: depsLoading, data: user }, getUser] = useFetch();
 	const [{ loading: coursesLoading, data: department }, getDepartment] = useFetch();
@@ -29,6 +30,7 @@ const Navigation = React.memo(({ departmentId, uri }) => {
 					setUser(res.fullName);
 				}
 				const depId = departmentId !== null ? departmentId : res.departments[0].id;
+				setDepartment(depId);
 				const depRes = await getDepartment(`departments/${depId}`);
 				if (depRes === 404) {
 					const state = { notFound: true };
@@ -37,7 +39,7 @@ const Navigation = React.memo(({ departmentId, uri }) => {
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [departmentId, getDepartment, getUser, setUser]);
+	}, [departmentId, getDepartment, getUser, setUser, setDepartment]);
 
 	React.useEffect(() => {
 		fetchData();
