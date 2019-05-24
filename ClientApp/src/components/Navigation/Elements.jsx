@@ -1,10 +1,19 @@
 import styled from '@emotion/styled';
 import colors from '../../utils/colors';
 
+export const NavWrapper = styled.div`
+	display: flex;
+	margin: 4px 4px 4px 6px;
+	border-width: 0 1px 0 0;
+	border-style: solid;
+	border-color: ${props => (props.dark ? '#282828' : '#e6e6e6')};
+	border-radius: 10px;
+	overflow: hidden;
+`;
+
 export const DepartmentsList = styled.nav`
-	height: 100vh;
+	height: 100%;
 	width: 70px;
-	min-height: 100%;
 	padding: 20px 10px;
 	background-color: ${colors.main};
 	box-shadow: 2px 0 6px -2px rgba(0, 0, 0, 0.5);
@@ -48,13 +57,10 @@ export const DepartmentsList = styled.nav`
 `;
 
 export const CoursesList = styled.nav`
-	height: 100vh;
+	height: 100%;
 	width: 230px;
-	min-height: 460px;
 	overflow: auto;
 	padding: 35px 15px 20px;
-	border-right: 1px solid;
-	border-color: ${props => (props.dark ? '#5b5b5b' : '#c7c7c7')};
 	color: ${props => (props.dark ? colors.textDark : colors.textLight)};
 	background-color: ${props => (props.dark ? colors.secondDark : colors.secondLight)};
 

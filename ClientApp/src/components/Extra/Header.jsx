@@ -8,13 +8,15 @@ import colors from '../../utils/colors';
 
 const Top = styled.header`
 	display: flex;
+	width: calc(100% - 6px);
+	margin: 4px 6px 4px 0;
 	justify-content: space-between;
-	width: 100%;
 	padding: 16px 20px 15px;
 	color: ${props => (props.dark ? colors.textDark : colors.textLight)};
-	border-bottom: 1px solid;
-	border-color: ${props => (props.dark ? '#5b5b5b' : '#c7c7c7')};
 	background-color: ${props => (props.dark ? colors.secondDark : colors.secondLight)};
+	border: 1px solid;
+	border-color: ${props => (props.dark ? '#282828' : '#e6e6e6')};
+	border-radius: 10px;
 	z-index: 8;
 
 	h3 {
@@ -71,6 +73,7 @@ const Header = () => {
 				<li>
 					<IconButton
 						type="button"
+						title={`activate ${isDark ? 'light' : 'dark'} mode`}
 						dark={isDark}
 						onClick={() => {
 							toggleDark();
@@ -80,13 +83,14 @@ const Header = () => {
 					</IconButton>
 				</li>
 				<li>
-					<IconButton type="button" dark={isDark}>
+					<IconButton type="button" title="settings" dark={isDark}>
 						<i className="icon-settings" />
 					</IconButton>
 				</li>
 				<li>
 					<IconButton
 						type="button"
+						title="logout"
 						dark={isDark}
 						onClick={() => {
 							logout();

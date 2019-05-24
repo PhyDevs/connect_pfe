@@ -6,10 +6,14 @@ import colors from '../../utils/colors';
 
 const Wrapper = styled.section`
 	display: flex;
+	margin: 0;
+	margin-bottom: 4px;
 	flex-grow: 1;
 	justify-content: center;
 	align-items: center;
 	background-color: ${props => (props.isDark ? colors.dark : colors.light)};
+	border-radius: 10px;
+	overflow: hidden;
 `;
 
 const Title = styled.div`

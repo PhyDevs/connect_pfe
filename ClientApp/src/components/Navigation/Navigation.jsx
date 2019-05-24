@@ -3,6 +3,7 @@ import { navigate } from '@reach/router';
 import PropTypes from 'prop-types';
 import Courses from './Courses';
 import Departments from './Departments';
+import { NavWrapper } from './Elements';
 import { useDataContext } from '../../providers/DataContext';
 import { useThemeContext } from '../../providers/ThemeContext';
 import { useFetch } from '../../utils/use-request';
@@ -46,7 +47,7 @@ const Navigation = React.memo(({ departmentId, uri }) => {
 	}, [fetchData]);
 
 	return (
-		<div style={{ display: 'flex' }}>
+		<NavWrapper dark={isDark}>
 			<Departments loading={depsLoading} departments={!user ? null : user.departments} />
 			<Courses
 				dark={isDark}
@@ -55,7 +56,7 @@ const Navigation = React.memo(({ departmentId, uri }) => {
 				courses={!department ? null : department.courses}
 				hasDepartment={!!user && user.departments.length > 0}
 			/>
-		</div>
+		</NavWrapper>
 	);
 });
 

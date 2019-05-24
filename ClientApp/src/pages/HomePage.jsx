@@ -12,7 +12,7 @@ const Home = ({ departmentId, courseId, uri, location }) => {
 		<NotFound />
 	) : (
 		<DataProvider>
-			<div style={{ display: 'flex' }}>
+			<div style={{ display: 'flex', height: '100vh' }}>
 				<Navigation uri={uri} departmentId={departmentId} courseId={courseId} />
 				<MainArea />
 			</div>

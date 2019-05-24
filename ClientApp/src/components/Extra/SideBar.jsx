@@ -6,12 +6,14 @@ import { useFetch } from '../../utils/use-request';
 import colors from '../../utils/colors';
 
 const Aside = styled.aside`
-	width: 200px;
+	width: 220px;
+	margin: 0 6px 4px 4px;
 	padding: 30px 15px 20px;
 	color: ${props => (props.dark ? colors.textDark : colors.textLight)};
-	border-left: 1px solid;
-	border-color: ${props => (props.dark ? '#5b5b5b' : '#c7c7c7')};
 	background-color: ${props => (props.dark ? colors.secondDark : colors.secondLight)};
+	border: 1px solid;
+	border-color: ${props => (props.dark ? '#282828' : '#e6e6e6')};
+	border-radius: 10px;
 
 	ul {
 		padding: 0;
