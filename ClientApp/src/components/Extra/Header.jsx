@@ -8,16 +8,18 @@ import colors from '../../utils/colors';
 
 const Top = styled.header`
 	display: flex;
-	width: calc(100% - 6px);
-	margin: 4px 6px 4px 0;
+	width: calc(100% - 10px);
+	margin: 8px 10px 12px 0;
 	justify-content: space-between;
 	padding: 16px 20px 15px;
 	color: ${props => (props.dark ? colors.textDark : colors.textLight)};
-	background-color: ${props => (props.dark ? colors.secondDark : colors.secondLight)};
-	border: 1px solid;
-	border-color: ${props => (props.dark ? '#282828' : '#e6e6e6')};
+	background-color: ${props => (props.dark ? colors.secondDark : colors.light)};
 	border-radius: 10px;
 	z-index: 8;
+	box-shadow: ${props =>
+		props.dark
+			? '0px 1px 2px rgba(210, 216, 218, 0.24), 0px 0px 1px rgba(210,216,218,0.12)'
+			: '0px 1px 2px rgba(10, 16, 20, 0.24), 0px 0px 1px rgba(10, 16, 20, 0.12)'};
 
 	h3 {
 		margin: 0;

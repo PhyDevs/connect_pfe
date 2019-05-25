@@ -26,10 +26,8 @@ const Navigation = React.memo(({ departmentId, uri }) => {
 			navigate('/login');
 		} else {
 			const { data: res } = await getUser(`users/${id}`);
+			if (!userName && res) setUser(res.fullName);
 			if (res !== null && res.departments.length > 0) {
-				if (!userName) {
-					setUser(res.fullName);
-				}
 				const depId = departmentId !== null ? departmentId : res.departments[0].id;
 				setDepartment(depId);
 				const depRes = await getDepartment(`departments/${depId}`);

@@ -7,13 +7,15 @@ import colors from '../../utils/colors';
 
 const Aside = styled.aside`
 	width: 220px;
-	margin: 0 6px 4px 4px;
+	margin: 0 10px 10px 12px;
 	padding: 30px 15px 20px;
 	color: ${props => (props.dark ? colors.textDark : colors.textLight)};
-	background-color: ${props => (props.dark ? colors.secondDark : colors.secondLight)};
-	border: 1px solid;
-	border-color: ${props => (props.dark ? '#282828' : '#e6e6e6')};
+	background-color: ${props => (props.dark ? colors.secondDark : colors.light)};
 	border-radius: 10px;
+	box-shadow: ${props =>
+		props.dark
+			? '0px 1px 2px rgba(210,216,218,0.24), 0px 0px 1px rgba(210,216,218,0.12), 0px -1px 2px rgba(210,216,218,0.15)'
+			: '0px 1px 2px rgba(10,16,20,0.24), 0px 0px 1px rgba(10,16,20,0.12), 0px -1px 2px rgba(10,16,20,0.15)'};
 
 	ul {
 		padding: 0;

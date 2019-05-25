@@ -7,13 +7,17 @@ import colors from '../../utils/colors';
 const Wrapper = styled.section`
 	display: flex;
 	margin: 0;
-	margin-bottom: 4px;
+	margin-bottom: 10px;
 	flex-grow: 1;
 	justify-content: center;
 	align-items: center;
-	background-color: ${props => (props.isDark ? colors.dark : colors.light)};
+	background-color: ${props => (props.dark ? colors.secondDark : colors.light)};
 	border-radius: 10px;
 	overflow: hidden;
+	box-shadow: ${props =>
+		props.dark
+			? '0px 1px 2px rgba(210,216,218,0.24), 0px 0px 1px rgba(210,216,218,0.12), 0px -1px 2px rgba(210,216,218,0.15)'
+			: '0px 1px 2px rgba(10,16,20,0.24), 0px 0px 1px rgba(10,16,20,0.12), 0px -1px 2px rgba(10,16,20,0.15)'};
 `;
 
 const Title = styled.div`
@@ -23,7 +27,7 @@ const Title = styled.div`
 		margin-bottom: 10px;
 		font-size: 4.5rem;
 		text-transform: capitalize;
-		color: ${props => (props.isDark ? colors.textDark : colors.textLight)};
+		color: ${props => (props.dark ? colors.textDark : colors.textLight)};
 	}
 	h3 {
 		position: relative;
@@ -36,7 +40,7 @@ const Title = styled.div`
 		&:after,
 		&:before {
 			content: '';
-			background-color: ${props => (props.isDark ? colors.dark : colors.light)};
+			background-color: ${props => (props.dark ? colors.secondDark : colors.light)};
 			position: absolute;
 			width: 15%;
 			height: 220%;
@@ -61,8 +65,8 @@ const Welcome = React.memo(() => {
 	} = useDataContext();
 
 	return (
-		<Wrapper isDark={isDark}>
-			<Title isDark={isDark}>
+		<Wrapper dark={isDark}>
+			<Title dark={isDark}>
 				<h1>welcome back</h1>
 				<h3>{user}</h3>
 			</Title>

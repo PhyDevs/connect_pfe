@@ -6,7 +6,7 @@ import SideBar from './SideBar';
 const MainArea = () => (
 	<main style={{ flexGrow: 1 }}>
 		<Header />
-		<div style={{ display: 'flex', height: 'calc(100% - 62px)' }}>
+		<div style={{ display: 'flex', height: 'calc(100% - 72px)' }}>
 			<Welcome />
 			<SideBar />
 		</div>
