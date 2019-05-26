@@ -14,6 +14,19 @@
     box-sizing: border-box;
 }
 
+::-webkit-scrollbar {
+    width: 8px;
+    background-color: #f2f2f2;
+    border-radius: 8px;
+}
+.dark ::-webkit-scrollbar {
+    background-color: #121212;
+}
+::-webkit-scrollbar-thumb {
+	background-color: #7300ac;
+	border-radius: 80px;
+}
+
 html, body {
     margin: 0;
     padding: 0;
@@ -68,3 +81,34 @@ a:focus:after {
 .icon-spin:before { content: '\e802'; }
 .icon-logout:before { content: '\e803'; }
 .icon-settings:before { content: '\e804'; }
+
+.loading-con {
+    display: block;
+    position: absolute;
+    top: calc(50% - 30px);
+    left: calc(50% - 30px);
+    width: 60px;
+    height: 60px;
+    animation: spin .85s linear infinite;
+}
+.loading-con:after {
+    content: '\e802';
+    position: absolute;
+    font-family: "fontello";
+    font-size: 70px;
+    top: 6px;
+    left: 0;
+    line-height: 1em;
+    color: #7300ac;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes spin {
+    from {
+        transform: rotateZ(360deg);
+    }
+    to{
+        transform: rotateZ(0deg);
+    }
+}

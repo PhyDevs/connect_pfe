@@ -10,7 +10,7 @@ const NotFound = React.lazy(() => import('./pages/NotFound'));
 
 const App = () => (
 	<ThemeProvider>
-		<React.Suspense fallback="loading ...">
+		<React.Suspense fallback={<div className="loading-con" />}>
 			<Router>
 				<Home path="/" />
 				<Home path="/:departmentId" />
