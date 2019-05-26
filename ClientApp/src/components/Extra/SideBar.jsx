@@ -6,7 +6,8 @@ import { useFetch } from '../../utils/use-request';
 import colors from '../../utils/colors';
 
 const Aside = styled.aside`
-	width: 220px;
+	width: 230px;
+	min-width: 230px;
 	margin: 0 10px 10px 12px;
 	padding: 30px 15px 20px;
 	color: ${props => (props.dark ? colors.textDark : colors.textLight)};

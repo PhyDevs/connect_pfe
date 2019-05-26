@@ -3,6 +3,7 @@ import colors from '../../utils/colors';
 
 export const NavWrapper = styled.div`
 	display: flex;
+	min-width: 300px;
 	margin: 8px 12px 10px 10px;
 	border-radius: 10px;
 	overflow: hidden;
@@ -60,6 +61,7 @@ export const DepartmentsList = styled.nav`
 export const CoursesList = styled.nav`
 	height: 100%;
 	width: 230px;
+	min-width: 230px;
 	overflow: auto;
 	padding: 35px 15px 20px;
 	color: ${props => (props.dark ? colors.textDark : colors.textLight)};

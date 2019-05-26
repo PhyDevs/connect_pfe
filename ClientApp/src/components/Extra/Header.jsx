@@ -70,7 +70,7 @@ const Header = () => {
 
 	return (
 		<Top dark={isDark}>
-			<h3>{currentCourse && `Course: ${currentCourse}`}</h3>
+			<h3>{currentCourse && `Course: ${currentCourse.name}`}</h3>
 			<ul>
 				<li>
 					<IconButton

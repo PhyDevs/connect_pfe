@@ -4,7 +4,7 @@ import NotFound from './NotFound';
 import asPrivate from '../components/HOCs/asPrivate';
 import { DataProvider } from '../providers/DataContext';
 import Navigation from '../components/Navigation/Navigation';
-import MainArea from '../components/Extra/MainArea';
+import MainArea from '../components/MainArea/index';
 
 // eslint-disable-next-line react/prop-types
 const Home = ({ departmentId, courseId, uri, location }) => {
@@ -13,8 +13,8 @@ const Home = ({ departmentId, courseId, uri, location }) => {
 	) : (
 		<DataProvider>
 			<div style={{ display: 'flex', height: '100vh' }}>
-				<Navigation uri={uri} departmentId={departmentId} courseId={courseId} />
-				<MainArea />
+				<Navigation uri={uri} departmentId={departmentId} />
+				<MainArea uri={uri} courseId={courseId} />
 			</div>
 		</DataProvider>
 	);
