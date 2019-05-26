@@ -1,5 +1,6 @@
 import React from 'react';
 import { MessagesWrapper, CustomList, MessageItem, MessageEmpty } from './Elements';
+import ChatInput from './ChatInput';
 import { useDataContext } from '../../providers/DataContext';
 import { useThemeContext } from '../../providers/ThemeContext';
 import { useFetch } from '../../utils/use-request';
@@ -23,7 +24,16 @@ const Messages = React.memo(() => {
 
 	return (
 		<MessagesWrapper dark={isDark}>
-			{loading ? <div className="loading-con" /> : messages && <MessagesList messages={messages} />}
+			{loading ? (
+				<div className="loading-con" />
+			) : (
+				messages && (
+					<>
+						<MessagesList messages={messages} />
+						<ChatInput dark={isDark} />
+					</>
+				)
+			)}
 		</MessagesWrapper>
 	);
 });

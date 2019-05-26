@@ -62,13 +62,14 @@ const Btn = styled.button`
 	}
 `;
 
-const Button = ({ type, value, width, bg, loading }) => (
-	<Btn type={type} width={width} bg={bg} disabled={loading}>
+const Button = ({ className, type, value, width, bg, loading }) => (
+	<Btn type={type} width={width} bg={bg} disabled={loading} className={className}>
 		{value}
 	</Btn>
 );
 
 Button.propTypes = {
+	className: PropTypes.string,
 	type: PropTypes.string,
 	value: PropTypes.string.isRequired,
 	width: PropTypes.string,
@@ -77,6 +78,7 @@ Button.propTypes = {
 };
 
 Button.defaultProps = {
+	className: null,
 	type: 'button',
 	width: '100%',
 	bg: colors.main,
