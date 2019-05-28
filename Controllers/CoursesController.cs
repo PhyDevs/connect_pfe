@@ -114,7 +114,7 @@ namespace Connect.Controllers
 
             if (!await AllowedToGetMessagesAsync(course)) return Forbid();
 
-            IEnumerable<Message> messages = await _em.Courses.GetMessagesAsync(id, offset, offset + 10);
+            IEnumerable<Message> messages = await _em.Courses.GetMessagesAsync(id, offset, 10);
 
             return Ok(_mapper.Map<IEnumerable<MessageResponse>>(messages));
         }
