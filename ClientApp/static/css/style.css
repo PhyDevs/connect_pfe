@@ -11,12 +11,13 @@
 }
  
 * {
-    word-break: break-all;
+    word-break: break-word;
     box-sizing: border-box;
 }
 
 ::-webkit-scrollbar {
     width: 8px;
+    height: 8px;
     background-color: #f2f2f2;
     border-radius: 8px;
 }
@@ -52,7 +53,7 @@ a {
 a:focus{ 
     outline: none;
 }
-a:focus:after {
+a:not(.no-focus):focus:after {
     content: '';
     position: absolute;
     width: calc(100% + 4px);
