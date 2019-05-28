@@ -11,6 +11,7 @@
 }
  
 * {
+    word-break: break-all;
     box-sizing: border-box;
 }
 
@@ -91,7 +92,17 @@ a:focus:after {
     height: 60px;
     animation: spin .85s linear infinite;
 }
-.loading-con:after {
+
+.loading-con-sm {
+    display: block;
+    position: relative;
+    left: calc(50% - 22px);
+    width: 44px;
+    height: 44px;
+    animation: spin .85s linear infinite;
+}
+
+.loading-con:after, .loading-con-sm:after {
     content: '\e802';
     position: absolute;
     font-family: "fontello";
@@ -102,6 +113,11 @@ a:focus:after {
     color: #7300ac;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+.loading-con-sm:after {
+    font-size: 52px;
+    top: 4px;
 }
 
 @keyframes spin {

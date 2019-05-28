@@ -1,53 +1,42 @@
 import React from 'react';
-import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import Button from '../Common/Button';
-import colors from '../../utils/colors';
+import { ChatForm, SendButton } from './Elements';
+import { usePost } from '../../utils/use-request';
 
-const ChatForm = styled.div`
-	width: calc(100% - 40px);
-	margin: 0 20px 30px;
-	padding: 30px 10px 0;
-	border-top: 1px solid #cfcfcf;
+const ChatInput = ({ courseId, dark, addMessage }) => {
+	const [{ loading }, send] = usePost();
 
-	form {
-		position: relative;
+	const handelSubmit = async e => {
+		e.preventDefault();
+		const fromEl = e.target;
+		const { message } = fromEl.elements;
+		if (!message.value.trim()) return;
 
-		textarea {
-			width: 100%;
-			padding: 15px 105px 15px 30px;
-			color: ${props => (props.dark ? colors.textDark : colors.textLight)};
-			background-color: ${props => (props.dark ? colors.dark : colors.secondLight)};
-			line-height: 1.3rem;
-			border: none;
-			outline: none;
-			border-radius: 10px;
-			resize: none;
+		const { data } = await send('messages', {
+			content: message.value.trim(),
+			courseId,
+		});
+
+		if (data) {
+			addMessage(data);
+			fromEl.reset();
 		}
-	}
-`;
+	};
 
-const SendBtn = styled(Button)`
-	display: block;
-	position: absolute;
-	top: 14px;
-	right: 15px;
-	margin: 0;
-`;
-
-const ChatInput = ({ dark }) => {
 	return (
 		<ChatForm dark={dark}>
-			<form method="post">
+			<form method="post" onSubmit={handelSubmit}>
 				<textarea name="message" placeholder="Write a message..." />
-				<SendBtn type="submit" value="Send" width="auto" />
+				<SendButton type="submit" value="Send" loading={loading} width="auto" />
 			</form>
 		</ChatForm>
 	);
 };
 
 ChatInput.propTypes = {
+	courseId: PropTypes.number.isRequired,
 	dark: PropTypes.bool.isRequired,
+	addMessage: PropTypes.func.isRequired,
 };
 
 export default ChatInput;

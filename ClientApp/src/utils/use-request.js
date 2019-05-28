@@ -25,19 +25,24 @@ const requsetReducer = (state, action) => {
 const usePost = () => {
 	const [state, dispatch] = React.useReducer(requsetReducer, {
 		loading: false,
-		data: null,
 		errors: null,
 	});
 
 	const send = async (route, data) => {
 		let res = { data: null };
 		try {
+			const { token } = getUserInfo();
+			const headers = {
+				'Content-Type': 'application/json',
+			};
+			if (token !== null) headers.Authorization = `Bearer ${token}`;
+
 			dispatch({ type: types.SUBMIT_STARTED });
-			res = await axios.post(`${API_PATH}/${route}`, data);
-			dispatch({ type: types.SUBMIT_DONE, payload: { data: res.data, errors: null } });
+			res = await axios.post(`${API_PATH}/${route}`, data, { headers });
+			dispatch({ type: types.SUBMIT_DONE, payload: { errors: null } });
 		} catch (err) {
 			const errors = !err.response ? { error: 'Connection error' } : err.response.data;
-			dispatch({ type: types.SUBMIT_DONE, payload: { data: null, errors } });
+			dispatch({ type: types.SUBMIT_DONE, payload: { errors } });
 		}
 
 		return res;

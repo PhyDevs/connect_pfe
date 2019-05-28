@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Button from '../Common/Button';
 import colors from '../../utils/colors';
 
 export const WelcomeWrapper = styled.section`
@@ -72,13 +73,18 @@ export const BigTitle = styled.div`
 	}
 `;
 
-export const CustomList = styled.ul`
-	display: flex;
+export const CustomOuterList = styled.div`
 	position: relative;
+	padding: 0;
+	margin: 10px 0;
+	overflow-y: auto;
+`;
+
+export const CustomInnerList = styled.ul`
+	display: flex;
 	width: calc(100% - 10px);
-	margin: 15px 5px;
-	padding: 20px 10px;
-	overflow-y: scroll;
+	padding: 5px 10px 20px;
+	margin: 0 5px;
 	flex-direction: column-reverse;
 	list-style: none;
 `;
@@ -143,4 +149,35 @@ export const MessageItem = styled.li`
 		left: 0;
 		background-color: #cfcfcf;
 	}
+`;
+
+export const ChatForm = styled.div`
+	width: calc(100% - 40px);
+	margin: 0 20px 30px;
+	padding: 30px 10px 0;
+	border-top: 1px solid #cfcfcf;
+
+	form {
+		position: relative;
+
+		textarea {
+			width: 100%;
+			padding: 15px 120px 15px 30px;
+			color: ${props => (props.dark ? colors.textDark : colors.textLight)};
+			background-color: ${props => (props.dark ? colors.dark : colors.secondLight)};
+			line-height: 1.3rem;
+			border: none;
+			outline: none;
+			border-radius: 10px;
+			resize: none;
+		}
+	}
+`;
+
+export const SendButton = styled(Button)`
+	display: block;
+	position: absolute;
+	top: 14px;
+	right: 15px;
+	margin: 0;
 `;

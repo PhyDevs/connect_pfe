@@ -13,6 +13,7 @@ const Aside = styled.aside`
 	color: ${props => (props.dark ? colors.textDark : colors.textLight)};
 	background-color: ${props => (props.dark ? colors.secondDark : colors.light)};
 	border-radius: 10px;
+	overflow-y: auto;
 	box-shadow: ${props =>
 		props.dark
 			? '0px 1px 2px rgba(210,216,218,0.24), 0px 0px 1px rgba(210,216,218,0.12), 0px -1px 2px rgba(210,216,218,0.15)'
