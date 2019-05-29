@@ -94,11 +94,13 @@ namespace Connect.Controllers
         // POST api/Users/2/Departments
         [Authorize(Policy = "AdminOnly")]
         [HttpPost("{iNumber}/Departments")]
-        public async Task<IActionResult> AssignDepartmentsToUser([FromRoute] int iNumber, [FromBody] int[] departments)
+        public async Task<IActionResult> AssignDepartmentsToUser([FromRoute] int iNumber, [FromQuery(Name = "role")] int ?role, [FromBody] int[] departments)
         {
             ConnectUser user = await _em.Users.FindByIndexAsync(iNumber);
             if (user == null) return NotFound();
 
+            if (role >= 0 || role <= 2) user.Role = (Roles)role;
+            
             await _em.UserDepartments.RemoveAll(user.Id);
             foreach(int departemtnId in departments)
             {
