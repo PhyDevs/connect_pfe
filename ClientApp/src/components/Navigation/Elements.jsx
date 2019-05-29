@@ -19,6 +19,7 @@ export const DepartmentsList = styled.nav`
 	padding: 20px 10px;
 	background-color: ${colors.main};
 	box-shadow: 2px 0 4px -2px rgba(0, 0, 0, 0.5);
+	overflow-y: auto;
 	z-index: 5;
 
 	ul {

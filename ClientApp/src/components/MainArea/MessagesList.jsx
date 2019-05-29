@@ -42,7 +42,7 @@ const MessagesList = ({ messages, courseId, addMessage }) => {
 		const prevHeight = scrollableRef.current.scrollHeight;
 
 		if (offsetRef.current !== null && el.scrollTop === 0 && messages.length >= 10) {
-			const { data } = await getCourse(`courses/${courseId}/messages/${offsetRef.current}`);
+			const { data } = await getCourse(`courses/${courseId}/messages/${offsetRef.current}`, false);
 			if (data) {
 				offsetRef.current = data.length >= 10 ? offsetRef.current + 10 : null;
 				shouldScrollRef.current = false;

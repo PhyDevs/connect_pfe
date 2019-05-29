@@ -16,7 +16,7 @@ const Messages = React.memo(() => {
 
 	const fetchData = React.useCallback(async () => {
 		if (course !== null) {
-			const { data } = await getCourse(`courses/${course.id}/messages`);
+			const { data } = await getCourse(`courses/${course.id}/messages`, false);
 			setMessages(data);
 		}
 	}, [course, getCourse]);

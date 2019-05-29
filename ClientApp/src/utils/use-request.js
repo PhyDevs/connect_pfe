@@ -57,7 +57,7 @@ const useFetch = () => {
 		data: null,
 	});
 
-	const get = React.useCallback(async route => {
+	const get = React.useCallback(async (route, isCached = true) => {
 		let res = { data: null };
 		try {
 			const { token } = getUserInfo();
@@ -66,11 +66,11 @@ const useFetch = () => {
 				Authorization: `Bearer ${token}`,
 			};
 			dispatch({ type: types.SUBMIT_STARTED });
-			if (cache[route] !== undefined) {
+			if (cache[route] !== undefined && isCached) {
 				res = cache[route];
 			} else {
 				res = await axios.get(`${API_PATH}/${route}`, { headers });
-				cache[route] = res;
+				cache[route] = isCached ? res : null;
 			}
 			dispatch({ type: types.SUBMIT_DONE, payload: { data: res.data } });
 		} catch (err) {
