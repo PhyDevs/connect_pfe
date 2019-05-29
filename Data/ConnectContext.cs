@@ -1,10 +1,6 @@
 ﻿using Connect.Data.EntityConfigurations;
 using Connect.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Connect.Data
 {
@@ -16,6 +12,7 @@ namespace Connect.Data
         public DbSet<Department> Departments { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<UserDepartment> UserDepartment { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -5,15 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\.gitignore" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove=".gitignore" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -91,5 +91,26 @@ namespace Connect.Controllers
             return Ok();
         }
 
+        // POST api/Users/2/Departments
+        [Authorize(Policy = "AdminOnly")]
+        [HttpPost("{iNumber}/Departments")]
+        public async Task<IActionResult> AssignDepartmentsToUser([FromRoute] int iNumber, [FromBody] int[] departments)
+        {
+            ConnectUser user = await _em.Users.FindByIndexAsync(iNumber);
+            if (user == null) return NotFound();
+
+            await _em.UserDepartments.RemoveAll(user.Id);
+            foreach(int departemtnId in departments)
+            {
+                if(!await _em.Departments.ExisteAsync(departemtnId)) return NotFound();
+                UserDepartment userDepartment = new UserDepartment() { UserId = user.Id, DepartmentId = departemtnId };
+                await _em.UserDepartments.AddAsync(userDepartment);
+            }
+
+            await _em.FlushAsync();
+            return Ok();
+
+        }
+
     }
 }
