@@ -22,6 +22,7 @@ const Wrapper = styled.div`
 `;
 
 const NotFound = () => {
+	document.title = '404 Not Found';
 	return (
 		<Wrapper>
 			<div>

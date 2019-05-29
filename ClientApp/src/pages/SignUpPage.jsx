@@ -4,12 +4,15 @@ import FlexContainer from '../components/Common/FlexContainer';
 import SignUpForm from '../components/Form/SignUpForm';
 import { ValidationProvider } from '../providers/ValidationContext';
 
-const SignUpPage = () => (
-	<FlexContainer>
-		<ValidationProvider>
-			<SignUpForm />
-		</ValidationProvider>
-	</FlexContainer>
-);
+const SignUpPage = () => {
+	document.title = 'Connect App - SignUp';
+	return (
+		<FlexContainer>
+			<ValidationProvider>
+				<SignUpForm />
+			</ValidationProvider>
+		</FlexContainer>
+	);
+};
 
 export default asPublic(SignUpPage);

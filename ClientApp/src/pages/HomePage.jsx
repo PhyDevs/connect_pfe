@@ -8,6 +8,7 @@ import MainArea from '../components/MainArea/index';
 
 // eslint-disable-next-line react/prop-types
 const Home = ({ departmentId, courseId, uri, location }) => {
+	document.title = 'Connect App - Home';
 	return location.state && location.state.notFound ? (
 		<NotFound />
 	) : (
