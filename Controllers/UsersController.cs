@@ -31,7 +31,7 @@ namespace Connect.Controllers
         [HttpGet]
         public async Task<ActionResult> GetUsers()
         {
-            IEnumerable<ConnectUser> users = await _em.Users.GetAllAsync();
+            IEnumerable<ConnectUser> users = await _em.Users.GetLatestAsync();
             return Ok(_mapper.Map<IEnumerable<ConnectUserListResponse>>(users));
         }
 

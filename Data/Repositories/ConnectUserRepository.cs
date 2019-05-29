@@ -1,6 +1,7 @@
 ﻿using Connect.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,6 +10,12 @@ namespace Connect.Data.Repositories
     public class ConnectUserRepository : AbstractRepository<ConnectUser>
     {
         public ConnectUserRepository(ConnectContext context) : base(context) { }
+
+
+        public async Task<IEnumerable<ConnectUser>> GetLatestAsync()
+        {
+            return await _context.Users.OrderByDescending(u => u.Id).AsNoTracking().ToListAsync();
+        }
 
         public async Task<ConnectUser> FindByIndexAsync(int nInscription)
         {
