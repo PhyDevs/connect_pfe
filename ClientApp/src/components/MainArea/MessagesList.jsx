@@ -47,7 +47,7 @@ const MessagesList = ({ messages, courseId, addMessage }) => {
 				offsetRef.current = data.length >= 10 ? offsetRef.current + 10 : null;
 				shouldScrollRef.current = false;
 				addMessage(data);
-				scrollableRef.current.scrollTop = scrollableRef.current.scrollHeight - prevHeight - 30;
+				scrollableRef.current.scrollTop = scrollableRef.current.scrollHeight - prevHeight;
 			}
 
 			shouldScrollRef.current = true;

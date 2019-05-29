@@ -42,8 +42,12 @@ const Modal = ({ children }) => {
 	return children({ isOpen, setIsOpen });
 };
 
-const Dialog = ({ children, dismiss, isDark }) => {
+const Dialog = ({ children, dismiss, mount, isDark }) => {
 	const contentRef = React.useRef();
+
+	React.useEffect(() => {
+		mount();
+	}, [mount]);
 
 	const handleClick = e => {
 		if (!contentRef.current.contains(e.target)) dismiss();
@@ -61,7 +65,12 @@ const Dialog = ({ children, dismiss, isDark }) => {
 Dialog.propTypes = {
 	children: PropTypes.node.isRequired,
 	dismiss: PropTypes.func.isRequired,
+	mount: PropTypes.func,
 	isDark: PropTypes.bool.isRequired,
+};
+
+Dialog.defaultProps = {
+	mount: () => null,
 };
 
 export { Modal, Dialog };
