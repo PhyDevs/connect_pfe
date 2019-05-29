@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
+import { useThemeContext } from '../../providers/ThemeContext';
 import colors from '../../utils/colors';
 
 const SelectCon = styled.div`
@@ -19,9 +20,9 @@ const SelectCon = styled.div`
 
 	span {
 		position: absolute;
-		top: 12px;
+		top: 14px;
 		right: 8px;
-		font-size: 1rem;
+		font-size: 0.8rem;
 	}
 
 	ul {
@@ -34,7 +35,7 @@ const SelectCon = styled.div`
 		display: inline-block;
 		margin: 3px;
 		padding: 2px 6px;
-		background-color: #c7c7c7;
+		background-color: #8e8e8e;
 		border-radius: 4px;
 		cursor: default;
 
@@ -59,12 +60,14 @@ const SelectOptionsCon = styled.div`
 	top: 100%;
 	left: -1px;
 	padding: 6px 10px;
-	background-color: #ffffff;
+	color: ${props => (props.dark ? colors.textDark : colors.textLight)};
+	background-color: ${props => (props.dark ? colors.dark : colors.light)};
 	border: 1px solid ${colors.main};
 	border-radius: 0 0 4px 4px;
 	cursor: default;
+	z-index: 5;
 
-	li {
+	ul li {
 		display: block;
 
 		label {
@@ -79,12 +82,14 @@ const SelectOptionsCon = styled.div`
 	}
 `;
 
-const MultiSelect = ({ name, children }) => {
+const MultiSelect = ({ name, children, initState }) => {
+	const [isDark] = useThemeContext();
+
 	const selectConNode = React.useRef();
 	const optionsConNode = React.useRef();
 
 	const [isOpen, setopen] = React.useState(false);
-	const [selectedOptions, setSelectedOptions] = React.useState([]);
+	const [selectedOptions, setSelectedOptions] = React.useState(initState);
 
 	const handleClick = e => {
 		if (!selectConNode.current.contains(e.target)) setopen(false);
@@ -94,13 +99,15 @@ const MultiSelect = ({ name, children }) => {
 
 	const handleChange = e => {
 		const { value, checked } = e.target;
+		const label = e.target.getAttribute('label');
+
 		if (checked) {
-			setSelectedOptions(prevArr => [...prevArr, value]);
+			setSelectedOptions(prevOptions => [...prevOptions, { label, value }]);
 		}
 	};
 
 	const removeOption = value => {
-		setSelectedOptions(prevArr => prevArr.filter(e => e !== value));
+		setSelectedOptions(prevOptions => prevOptions.filter(option => option.value !== value));
 	};
 
 	React.useEffect(() => {
@@ -112,12 +119,12 @@ const MultiSelect = ({ name, children }) => {
 
 	return (
 		<SelectCon className={isOpen && 'focused'} ref={selectConNode}>
-			<input type="hidden" name={name} value={selectedOptions} />
+			<input type="hidden" name={name} value={selectedOptions.map(option => option.value)} />
 			<ul>
 				{selectedOptions.map(option => (
-					<li key={option}>
-						{option}
-						<button type="button" onClick={() => removeOption(option)}>
+					<li key={option.value}>
+						{option.label}
+						<button type="button" onClick={() => removeOption(option.value)}>
 							X
 						</button>
 					</li>
@@ -125,11 +132,11 @@ const MultiSelect = ({ name, children }) => {
 			</ul>
 			<span>&#9660;</span>
 			{isOpen && (
-				<SelectOptionsCon ref={optionsConNode}>
+				<SelectOptionsCon ref={optionsConNode} dark={isDark}>
 					<ul>
 						{React.Children.map(children, child => {
 							const { value } = child.props;
-							if (value && selectedOptions.indexOf(value) < 0) {
+							if (value && !selectedOptions.some(option => option.value === value)) {
 								return React.cloneElement(child, { changed: handleChange });
 							}
 							return null;
@@ -144,13 +151,22 @@ const MultiSelect = ({ name, children }) => {
 MultiSelect.propTypes = {
 	name: PropTypes.string.isRequired,
 	children: PropTypes.node.isRequired,
+	initState: PropTypes.arrayOf(
+		PropTypes.shape({
+			value: PropTypes.string,
+			label: PropTypes.string,
+		})
+	),
+};
+MultiSelect.defaultProps = {
+	initState: [],
 };
 
 const Option = ({ label, value, changed }) => {
 	return (
 		<li>
 			<label htmlFor={value}>
-				<input type="checkbox" id={value} value={value} onChange={changed} />
+				<input type="checkbox" id={value} value={value} label={label} onChange={changed} />
 				{label}
 			</label>
 		</li>

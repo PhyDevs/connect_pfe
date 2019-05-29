@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { navigate } from '@reach/router';
+import UsersModal from '../Admin/UsersModal';
 import { useDataContext } from '../../providers/DataContext';
 import { useThemeContext } from '../../providers/ThemeContext';
-import { logout } from '../../utils/authenticator';
+import { logout, getUserInfo } from '../../utils/authenticator';
 import colors from '../../utils/colors';
 
 const Top = styled.header`
@@ -67,26 +68,31 @@ const Header = () => {
 		state: { currentCourse },
 	} = useDataContext();
 	const [isDark, toggleDark] = useThemeContext();
+	const { role } = getUserInfo();
 
 	return (
 		<Top dark={isDark}>
 			<h3>{currentCourse && `Course: ${currentCourse.name}`}</h3>
 			<ul>
+				{role === 'admin' && (
+					<UsersModal
+						render={setIsOpen => (
+							<li>
+								<IconButton type="button" title="settings" dark={isDark} onClick={() => setIsOpen(true)}>
+									<i className="icon-settings" />
+								</IconButton>
+							</li>
+						)}
+					/>
+				)}
 				<li>
 					<IconButton
 						type="button"
 						title={`activate ${isDark ? 'light' : 'dark'} mode`}
 						dark={isDark}
-						onClick={() => {
-							toggleDark();
-						}}
+						onClick={() => toggleDark()}
 					>
 						<i className="icon-dark" />
-					</IconButton>
-				</li>
-				<li>
-					<IconButton type="button" title="settings" dark={isDark}>
-						<i className="icon-settings" />
 					</IconButton>
 				</li>
 				<li>
