@@ -5,7 +5,7 @@ namespace Connect.Dtos
     public class DepartmentPost
     {
         [Required]
-        [StringLength(30, MinimumLength = 4)]
+        [StringLength(50, MinimumLength = 4)]
         public string Name { get; set; }
 
         [Required]
