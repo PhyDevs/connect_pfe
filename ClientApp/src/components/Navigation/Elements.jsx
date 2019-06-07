@@ -2,11 +2,13 @@ import styled from '@emotion/styled';
 import colors from '../../utils/colors';
 
 export const NavWrapper = styled.div`
-	display: flex;
+	position: relative;
 	min-width: 300px;
 	margin: 8px 12px 10px 10px;
+	background-color: ${props => (props.dark ? colors.secondDark : colors.light)};
 	border-radius: 10px;
-	overflow: hidden;
+	overflow-x: hidden;
+	overflow-y: auto;
 	box-shadow: ${props =>
 		props.dark
 			? '0px 1px 2px rgba(210,216,218,0.24), 0px 0px 1px rgba(210,216,218,0.12), 0px -1px 2px rgba(210,216,218,0.15)'
@@ -14,12 +16,15 @@ export const NavWrapper = styled.div`
 `;
 
 export const DepartmentsList = styled.nav`
+	position: absolute;
+	top: 0;
+	left: 0;
 	height: 100%;
 	width: 70px;
+	min-height: fit-content;
 	padding: 20px 10px;
 	background-color: ${colors.main};
 	box-shadow: 2px 0 4px -2px rgba(0, 0, 0, 0.5);
-	overflow-y: auto;
 	z-index: 5;
 
 	ul {
@@ -30,7 +35,8 @@ export const DepartmentsList = styled.nav`
 		li {
 			position: relative;
 
-			a {
+			a,
+			button {
 				display: block;
 				width: 50px;
 				height: 50px;
@@ -55,15 +61,27 @@ export const DepartmentsList = styled.nav`
 					max-width: 100%;
 				}
 			}
+
+			button {
+				font-size: 40px;
+				line-height: 40px;
+				background-color: transparent;
+				color: #fafafa;
+				border: 3px solid #fafafa;
+				cursor: pointer;
+			}
 		}
 	}
 `;
 
 export const CoursesList = styled.nav`
+	position: absolute;
+	top: 0;
+	left: 70px;
 	height: 100%;
 	width: 230px;
+	min-height: fit-content;
 	min-width: 230px;
-	overflow: auto;
 	padding: 35px 15px 20px;
 	color: ${props => (props.dark ? colors.textDark : colors.textLight)};
 	background-color: ${props => (props.dark ? colors.secondDark : colors.light)};
