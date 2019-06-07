@@ -22,7 +22,7 @@
     border-radius: 8px;
 }
 .dark ::-webkit-scrollbar {
-    background-color: #121212;
+    background-color: #1f2251;
 }
 ::-webkit-scrollbar-thumb {
 	background-color: #7300ac;
@@ -43,7 +43,7 @@ body {
 }
 
 body.dark {
-    background-color: #121212;
+    background-color: #1f2251;
     color: #fafafa;	
 }
 

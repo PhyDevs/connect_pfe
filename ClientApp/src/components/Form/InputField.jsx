@@ -51,7 +51,7 @@ InputField.propTypes = {
 	name: PropTypes.string.isRequired,
 	type: PropTypes.string,
 	pattern: PropTypes.string,
-	parentForm: PropTypes.oneOf(['login', 'signUp']).isRequired,
+	parentForm: PropTypes.oneOf(['login', 'signUp', 'addDepartment']).isRequired,
 	errorMsg: PropTypes.string,
 	width: PropTypes.number,
 	pr: PropTypes.string,

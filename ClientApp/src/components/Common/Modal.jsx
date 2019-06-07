@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import colors from '../../utils/colors';
 
 const moveUp = keyframes`
-  	0% { transform: translateY(20px); }
-	80% { transform: translateY(-8px); }
+  	0% { opacity:0; transform: translateY(20px); }
+	80% { opacity:1; transform: translateY(-8px); }
 	100% { transform: translateY(0); }
 `;
 
@@ -34,6 +34,15 @@ const DialogStyled = styled.div`
 		border-radius: 6px;
 		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12), 0 2px 10px rgba(0, 0, 0, 0.08);
 		animation: ${moveUp} 0.23s ease-out;
+
+		.modal-title {
+			margin: 0;
+			margin-bottom: 15px;
+			padding: 15px 10px;
+			border-bottom: 2px solid #c7c7c7;
+			text-align: center;
+			color: ${props => (props.dark ? colors.textDark : colors.textLight)};
+		}
 	}
 `;
 

@@ -87,8 +87,8 @@ export const FormError = styled.p`
 	font-weight: 700;
 	text-align: center;
 	overflow: hidden;
-	color: ${colors.error};
-	border: 2px solid ${colors.error};
+	color: ${props => (props.success ? colors.success : colors.error)};
+	border: 2px solid ${props => (props.success ? colors.success : colors.error)};
 	border-radius: 4px;
 
 	&:after {
@@ -98,7 +98,7 @@ export const FormError = styled.p`
 		left: 0;
 		width: 100%;
 		height: 100%;
-		background-color: ${colors.error};
+		background-color: ${props => (props.success ? colors.success : colors.error)};
 		opacity: 0.33;
 	}
 
