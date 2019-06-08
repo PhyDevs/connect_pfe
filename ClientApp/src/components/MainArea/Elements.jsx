@@ -49,7 +49,7 @@ export const BigTitle = styled.div`
 		margin: 0;
 		font-size: 2.3rem;
 		color: #fafafa;
-		background-color: #7300ac;
+		background-color: ${colors.main};
 		overflow: hidden;
 
 		&:after,

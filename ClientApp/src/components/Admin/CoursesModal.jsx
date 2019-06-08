@@ -1,33 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import asAdminOnly from '../HOCs/asAdminOnly';
 import { ClosBtn } from './Elements';
 import { Modal, Dialog } from '../Common/Modal';
 import InputField from '../Form/InputField';
 import { FormError } from '../Form/Elements';
 import Button from '../Common/Button';
 import { useThemeContext } from '../../providers/ThemeContext';
+import { useDataContext } from '../../providers/DataContext';
 import { ValidationProvider } from '../../providers/ValidationContext';
+import { getUserInfo } from '../../utils/authenticator';
 import { usePost } from '../../utils/use-request';
 
-const DepartmentsModal = ({ render }) => {
+const CoursesModal = ({ render }) => {
 	const [isDark] = useThemeContext();
+	const {
+		state: { currentDepartment },
+	} = useDataContext();
 	const [{ loading, errors }, send] = usePost();
+	const { id } = getUserInfo();
 	const [success, setSuccess] = React.useState(null);
 
 	const HandelSubmit = async e => {
 		e.preventDefault();
 		const formRef = e.target;
-		const [departmentName, departmentAbbr] = formRef.elements;
+		const [courseName] = formRef.elements;
 
 		setSuccess(null);
-		const { data } = await send('departments', {
-			Name: departmentName.value,
-			Abbr: departmentAbbr.value,
+		const { data } = await send('courses', {
+			Name: courseName.value,
+			TeacherId: id,
+			DepartmentId: currentDepartment,
 		});
 
 		if (data) {
-			setSuccess('The department added sucessfully');
+			setSuccess('The course added sucessfully');
 			formRef.reset();
 		}
 	};
@@ -42,21 +48,14 @@ const DepartmentsModal = ({ render }) => {
 								<ClosBtn type="button" onClick={() => setIsOpen(false)}>
 									X
 								</ClosBtn>
-								<div style={{ minHeight: '300px', minWidth: '420px', padding: '0 20px 15px' }}>
-									<h1 className="modal-title">Add Department</h1>
+								<div style={{ minHeight: '240px', minWidth: '350px', padding: '0 20px 15px' }}>
+									<h1 className="modal-title">Add Course</h1>
 									<form method="post" style={{ padding: '20px 0 0' }} onSubmit={HandelSubmit}>
 										<InputField
 											label="Name"
-											name="departmentName"
+											name="courseName"
 											pattern="^.{4,}$"
 											errorMsg="Use 4 characters or more"
-											parentForm="addDepartment"
-										/>
-										<InputField
-											label="Abbreviation"
-											name="departmentAbbr"
-											pattern="^.{2,5}$"
-											errorMsg="Use more than 2 and less than 6 characters"
 											parentForm="addDepartment"
 										/>
 
@@ -87,8 +86,8 @@ const DepartmentsModal = ({ render }) => {
 	);
 };
 
-DepartmentsModal.propTypes = {
+CoursesModal.propTypes = {
 	render: PropTypes.func.isRequired,
 };
 
-export default asAdminOnly(DepartmentsModal);
+export default CoursesModal;

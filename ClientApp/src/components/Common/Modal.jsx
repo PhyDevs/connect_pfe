@@ -20,7 +20,7 @@ const DialogStyled = styled.div`
 	padding: 20px 30px;
 	top: 0;
 	left: 0;
-	background-color: ${props => (props.dark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)')};
+	background-color: ${props => (props.dark ? 'rgba(0, 0, 0, 0.78)' : 'rgba(0, 0, 0, 0.2)')};
 	z-index: 33;
 
 	& > .content {

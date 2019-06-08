@@ -106,15 +106,40 @@ export const CoursesList = styled.nav`
 		a {
 			display: block;
 			margin: 0 0 8px;
-			padding: 4px;
+			padding: 6px 4px;
 			font-size: 1.03rem;
 			letter-spacing: 0.3px;
 			font-weight: 700;
 			color: inherit;
 			text-decoration: none;
+			line-height: 1.5rem;
 
 			&:before {
 				content: '#';
+				display: inline-block;
+				font-size: 1.6rem;
+				margin-right: 6px;
+				transform: translateY(0.2rem);
+			}
+		}
+
+		& li > button {
+			display: block;
+			width: 100%;
+			margin: 0 0 8px;
+			padding: 6px 4px;
+			font-size: 1.03rem;
+			text-align: left;
+			letter-spacing: 0.3px;
+			font-weight: 700;
+			line-height: 1.5rem;
+			color: inherit;
+			cursor: pointer;
+			background-color: transparent;
+			border: none;
+
+			&:before {
+				content: '+';
 				display: inline-block;
 				font-size: 1.6rem;
 				margin-right: 6px;

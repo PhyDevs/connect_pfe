@@ -22,10 +22,10 @@
     border-radius: 8px;
 }
 .dark ::-webkit-scrollbar {
-    background-color: #1f2251;
+    background-color: #2f3136;
 }
 ::-webkit-scrollbar-thumb {
-	background-color: #7300ac;
+	background-color: #7289da;
 	border-radius: 80px;
 }
 
@@ -43,25 +43,15 @@ body {
 }
 
 body.dark {
-    background-color: #1f2251;
+    background-color: #2f3136;
     color: #fafafa;	
 }
 
 a {
     position: relative;
 }
-a:focus{ 
-    outline: none;
-}
-a:not(.no-focus):focus:after {
-    content: '';
-    position: absolute;
-    width: calc(100% + 4px);
-    height: calc(100% + 1px);
-    top: -1px;
-    left: -2px;
-    border: 1px solid rgba(115, 0, 172, 0.35);
-    border-radius: 4px;
+a:not(.no-focus):focus { 
+    outline: #7289da auto 5px
 }
 
 [class^="icon-"]:before, [class*=" icon-"]:before {
@@ -111,7 +101,7 @@ a:not(.no-focus):focus:after {
     top: 6px;
     left: 0;
     line-height: 1em;
-    color: #7300ac;
+    color: #7289da;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
