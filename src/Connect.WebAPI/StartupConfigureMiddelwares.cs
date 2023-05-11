@@ -11,7 +11,7 @@ public static class StartupConfigureMiddelwares
             app.UseSwaggerUI();
         }
 
-        app.UseCors(builder => builder.WithOrigins("https://localhost:3000", "http://localhost:3001", "https://localhost:3002")
+        app.UseCors(builder => builder.WithOrigins("https://localhost:3000", "http://localhost:3000")
                         .AllowAnyMethod()
                         .AllowAnyHeader());
 
