@@ -1,7 +1,5 @@
-﻿using AutoMapper;
-using Connect.Application.Interfaces;
-using Connect.Application.Models;
-using Connect.Domain.Entities;
+﻿using Connect.Application.Models;
+using Connect.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,32 +11,34 @@ namespace Connect.WebAPI.Controllers;
 [ApiController]
 public class DepartmentsController : ControllerBase
 {
-    private readonly IEntityManager _em;
-    private readonly IMapper _mapper;
+    private readonly IDepartmentsService _departmentsService;
 
-    public DepartmentsController(IEntityManager entityManager, IMapper mapper)
+    public DepartmentsController(IDepartmentsService departmentsService)
     {
-        _em = entityManager;
-        _mapper = mapper;
+        _departmentsService = departmentsService;
     }
 
     // GET: api/Departments
     [Authorize(Policy = "AdminOnly")]
     [HttpGet]
-    public async Task<ActionResult> GetDepartments()
+    public async Task<IActionResult> GetDepartments()
     {
-        IEnumerable<Department> departments = await _em.Departments.GetAllAsync();
-        return Ok(_mapper.Map<IEnumerable<DepartmentListResponse>>(departments));
+        var result = await _departmentsService.GetDepartments();
+        return result.Match<IActionResult>(
+            value => Ok(value),
+            e => BadRequest(e.Message)
+        );
     }
 
     // GET: api/Departments/5
     [HttpGet("{id}")]
     public async Task<ActionResult<DepartmentResponse>> GetDepartment([FromRoute] int id)
     {
-        Department department = await _em.Departments.GetEagerAsync(id);
-        if (department == null) return NotFound();
-
-        return _mapper.Map<DepartmentResponse>(department);
+        var result = await _departmentsService.GetDepartment(id);
+        return result.Match<ActionResult<DepartmentResponse>>(
+            value => Ok(value),
+            _ => NotFound()
+        );
     }
 
     // POST: api/Departments
@@ -46,16 +46,11 @@ public class DepartmentsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> PostDepartment([FromBody] DepartmentPost request)
     {
-        Department department = await _em.Departments.FindByIndexAsync(request.Abbr);
-        if (department != null)
-            return BadRequest(new { error = "This Departemnt exist." });
-
-        Department departmentSave = _mapper.Map<Department>(request);
-        await _em.Departments.AddAsync(departmentSave);
-        await _em.FlushAsync();
-
-        DepartmentListResponse departmentResponse = _mapper.Map<DepartmentListResponse>(departmentSave);
-        return CreatedAtAction(nameof(GetDepartment), new { id = departmentSave.Id }, departmentResponse);
+        var result = await _departmentsService.PostDepartment(request);
+        return result.Match<IActionResult>(
+            value => CreatedAtAction(nameof(GetDepartment), new { id = value.Id }, value),
+            e => BadRequest(e.Message)
+        );
     }
 
     // PUT: api/Departments/5
@@ -63,16 +58,11 @@ public class DepartmentsController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> PutDepartment([FromRoute] int id, [FromBody] DepartmentPost request)
     {
-        Department department = await _em.Departments.GetAsync(id);
-        if (department == null)
-            return NotFound();
-
-        if (request.Abbr != null) department.Abbr = request.Abbr;
-        if (request.Name != null) department.Name = request.Name;
-
-        if (request.Abbr != null || request.Name != null) await _em.FlushAsync();
-
-        return Ok();
+        var result = await _departmentsService.PutDepartment(id, request);
+        return result.Match<IActionResult>(
+            _ => Ok(),
+            _ => NotFound()
+        );
     }
 
     // DELETE: api/Departments/5
@@ -80,22 +70,21 @@ public class DepartmentsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteDepartment([FromRoute] int id)
     {
-        Department department = await _em.Departments.GetAsync(id);
-        if (department == null) return NotFound();
-
-        _em.Departments.Remove(department);
-        await _em.FlushAsync();
-
-        return Ok();
+        var result = await _departmentsService.DeleteDepartment(id);
+        return result.Match<IActionResult>(
+            _ => Ok(),
+            _ => NotFound()
+        );
     }
 
     // GET: api/Departments/5/users
     [HttpGet("{id}/users")]
-    public async Task<ActionResult> GetUsers([FromRoute] int id)
+    public async Task<IActionResult> GetUsers([FromRoute] int id)
     {
-        if (!await _em.Departments.ExisteAsync(id)) return NotFound();
-
-        IEnumerable<ConnectUser> users = await _em.Departments.GetUsersAsync(id);
-        return Ok(_mapper.Map<IEnumerable<ConnectUserListResponse>>(users));
+        var result = await _departmentsService.GetUsers(id);
+        return result.Match<IActionResult>(
+            value => Ok(value),
+            _ => NotFound()
+        );
     }
 }

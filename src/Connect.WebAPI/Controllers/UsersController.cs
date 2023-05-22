@@ -1,9 +1,5 @@
-﻿using System.Security.Claims;
-using AutoMapper;
-using Connect.Application.Interfaces;
-using Connect.Application.Models;
-using Connect.Domain.Entities;
-using Connect.Domain.Enums;
+﻿using Connect.Application.Models;
+using Connect.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,64 +11,56 @@ namespace Connect.WebAPI.Controllers;
 [ApiController]
 public class UsersController : ControllerBase
 {
-    private readonly IEntityManager _em;
-    private readonly IMapper _mapper;
+    private readonly IUsersService _usersService;
 
-    public UsersController(IEntityManager entityManager, IMapper mapper)
+    public UsersController(IUsersService usersService)
     {
-        _em = entityManager;
-        _mapper = mapper;
+        _usersService = usersService;
     }
 
     // GET: api/Users
     [Authorize(Policy = "AdminOnly")]
     [HttpGet]
-    public async Task<ActionResult> GetUsers()
+    public async Task<IActionResult> GetUsers()
     {
-        IEnumerable<ConnectUser> users = await _em.Users.GetLatestAsync();
-        return Ok(_mapper.Map<IEnumerable<ConnectUserListResponse>>(users));
+        var result = await _usersService.GetUsers();
+        return result.Match<IActionResult>(
+            value => Ok(value),
+            e => BadRequest(e.Message)
+        );
     }
 
     // GET: api/Users/293b3db7-7dea-4270-ba70-08d6c818495a
     [HttpGet("{id}")]
     public async Task<ActionResult<ConnectUserResponse>> GetUser([FromRoute] Guid id)
     {
-        ConnectUser user = await _em.Users.GetEagerAsync(id);
-        if (user == null) return NotFound();
-
-        return _mapper.Map<ConnectUserResponse>(user);
+        var result = await _usersService.GetUser(id);
+        return result.Match<ActionResult<ConnectUserResponse>>(
+            value => Ok(value),
+            _ => NotFound()
+        );
     }
 
     // GET: api/Users/2
     [HttpGet("{iNumber:int}")]
     public async Task<ActionResult<ConnectUserResponse>> GetUser([FromRoute] int iNumber)
     {
-        ConnectUser user = await _em.Users.GetEagerAsync(iNumber);
-        if (user == null) return NotFound();
-
-        return _mapper.Map<ConnectUserResponse>(user);
+        var result = await _usersService.GetUser(iNumber);
+        return result.Match<ActionResult<ConnectUserResponse>>(
+            value => Ok(value),
+            _ => NotFound()
+        );
     }
 
     // PUT: api/Users/2
     [HttpPut("{iNumber}")]
     public async Task<IActionResult> PutUser([FromRoute] int iNumber, [FromBody] ConnectUserUpdate request)
     {
-        int.TryParse(
-            User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value,
-            out int nameId);
-
-        if (nameId == 0 || nameId != iNumber) return Forbid();
-
-        ConnectUser user = await _em.Users.FindByIndexAsync(iNumber);
-        if (user == null) return NotFound();
-
-        if (request.FirstName != null) user.FirstName = request.FirstName;
-        if (request.LastName != null) user.LastName = request.LastName;
-
-        if (request.FirstName != null || request.LastName != null)
-            await _em.FlushAsync();
-
-        return Ok();
+        var result = await _usersService.PutUser(iNumber, request, User.Claims);
+        return result.Match<IActionResult>(
+            _ => Ok(),
+            e => BadRequest(e.Message)
+        );
     }
 
     // DELETE: api/Users/2
@@ -80,13 +68,11 @@ public class UsersController : ControllerBase
     [HttpDelete("{iNumber}")]
     public async Task<IActionResult> DeleteUser([FromRoute] int iNumber)
     {
-        ConnectUser user = await _em.Users.FindByIndexAsync(iNumber);
-        if (user == null) return NotFound();
-
-        _em.Users.Remove(user);
-        await _em.FlushAsync();
-
-        return Ok();
+        var result = await _usersService.DeleteUser(iNumber);
+        return result.Match<IActionResult>(
+            _ => Ok(),
+            _ => NotFound()
+        );
     }
 
     // POST api/Users/2/Departments
@@ -94,22 +80,10 @@ public class UsersController : ControllerBase
     [HttpPost("{iNumber}/Departments")]
     public async Task<IActionResult> AssignDepartmentsToUser([FromRoute] int iNumber, [FromQuery(Name = "role")] int? role, [FromBody] int[] departments)
     {
-        ConnectUser user = await _em.Users.FindByIndexAsync(iNumber);
-        if (user == null) return NotFound();
-
-        if (role >= 0 || role <= 2) user.Role = (Roles)role;
-
-        await _em.UserDepartments.RemoveAll(user.Id);
-        foreach (int departemtnId in departments)
-        {
-            if (!await _em.Departments.ExisteAsync(departemtnId)) return NotFound();
-            UserDepartment userDepartment = new UserDepartment() { UserId = user.Id, DepartmentId = departemtnId };
-            await _em.UserDepartments.AddAsync(userDepartment);
-        }
-
-        await _em.FlushAsync();
-        return Ok();
-
+        var result = await _usersService.AssignDepartmentsToUser(iNumber, role, departments);
+        return result.Match<IActionResult>(
+            _ => Ok(),
+            _ => NotFound()
+        );
     }
-
 }

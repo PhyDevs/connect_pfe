@@ -1,11 +1,7 @@
-﻿using AutoMapper;
-using Connect.Application.Interfaces;
-using Connect.Domain.Entities;
-using Connect.Application.Models;
-using Connect.Domain.Enums;
+﻿using Connect.Application.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
+using Connect.Application.Services;
 
 
 namespace Connect.WebAPI.Controllers;
@@ -15,32 +11,34 @@ namespace Connect.WebAPI.Controllers;
 [ApiController]
 public class CoursesController : ControllerBase
 {
-    private readonly IEntityManager _em;
-    private readonly IMapper _mapper;
+    private readonly ICoursesService _coursesService;
 
-    public CoursesController(IEntityManager entityManager, IMapper mapper)
+    public CoursesController(ICoursesService coursesService)
     {
-        _em = entityManager;
-        _mapper = mapper;
+        _coursesService = coursesService;
     }
 
     // GET: api/Courses
     [Authorize(Policy = "AdminOnly")]
     [HttpGet]
-    public async Task<ActionResult> GetCourses()
+    public async Task<IActionResult> GetCourses()
     {
-        IEnumerable<Course> courses = await _em.Courses.GetAllAsync();
-        return Ok(_mapper.Map<IEnumerable<CourseListResponse>>(courses));
+        var result = await _coursesService.GetCourses();
+        return result.Match<IActionResult>(
+            value => Ok(value),
+            e => BadRequest(e.Message)
+        );
     }
 
     // GET: api/Courses/2
     [HttpGet("{id}")]
-    public async Task<ActionResult<CourseResponse>> GetCourse([FromRoute] int id)
+    public async Task<IActionResult> GetCourse([FromRoute] int id)
     {
-        Course course = await _em.Courses.GetEagerAsync(id);
-        if (course == null) return NotFound();
-
-        return _mapper.Map<CourseResponse>(course);
+        var result = await _coursesService.GetCourse(id);
+        return result.Match<IActionResult>(
+            value => Ok(value),
+            _ => NotFound()
+        );
     }
 
     // POST: api/Courses
@@ -48,25 +46,11 @@ public class CoursesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> PostCourse([FromBody] CoursePost request)
     {
-        if (!await _em.Departments.ExisteAsync(request.DepartmentId))
-            ModelState.AddModelError("DepartmentId", "This Department Doesn't exist");
-
-        ConnectUser teacher = await _em.Users.GetAsync(request.TeacherId);
-        if (teacher == null)
-            ModelState.AddModelError("TeacherId", "This Teacher Doesn't exist");
-
-        if (teacher != null && teacher.Role != Roles.Teacher)
-            ModelState.AddModelError("TeacherId", "This User is not a Teacher");
-
-        if (!ModelState.IsValid) return BadRequest(ModelState);
-
-        Course course = _mapper.Map<Course>(request);
-
-        await _em.Courses.AddAsync(course);
-        await _em.FlushAsync();
-
-        CourseResponse courseResponse = _mapper.Map<CourseResponse>(course);
-        return CreatedAtAction(nameof(GetCourse), new { id = course.Id }, courseResponse);
+        var result = await _coursesService.PostCourse(request);
+        return result.Match<IActionResult>(
+            value => CreatedAtAction(nameof(GetCourse), new { id = value.Id }, value),
+            e => BadRequest(e.Message)
+        );
     }
 
     // PUT: api/Courses/2
@@ -74,18 +58,11 @@ public class CoursesController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> PutCourse([FromRoute] int id, [FromBody] CourseUpdate request)
     {
-        Course course = await _em.Courses.GetAsync(id);
-        if (course == null) return NotFound();
-
-        if (!await UserHasCourse(course)) return Forbid();
-
-        if (request.Name != null)
-        {
-            course.Name = request.Name;
-            await _em.FlushAsync();
-        }
-
-        return Ok();
+        var result = await _coursesService.PutCourse(id, request);
+        return result.Match<IActionResult>(
+            _ => Ok(),
+            e => BadRequest(e.Message)
+        );
     }
 
     // DELETE: api/Courses/2
@@ -93,57 +70,21 @@ public class CoursesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCourse([FromRoute] int id)
     {
-        Course course = await _em.Courses.GetAsync(id);
-        if (course == null) return NotFound();
-
-        if (!await UserHasCourse(course)) return Forbid();
-
-        _em.Courses.Remove(course);
-        await _em.FlushAsync();
-
-        return Ok();
+        var result = await _coursesService.DeleteCourse(id);
+        return result.Match<IActionResult>(
+            _ => Ok(),
+            e => BadRequest(e.Message)
+        );
     }
 
     // GET: api/Courses/2/Messages
     [HttpGet("{id}/messages/{offset:int=0}")]
-    public async Task<ActionResult> GetMessages([FromRoute] int id, int offset)
+    public async Task<IActionResult> GetMessages([FromRoute] int id, int offset)
     {
-        Course course = await _em.Courses.GetAsync(id);
-        if (course == null) return NotFound();
-
-        if (!await AllowedToGetMessagesAsync(course)) return Forbid();
-
-        IEnumerable<Message> messages = await _em.Courses.GetMessagesAsync(id, offset, 10);
-
-        return Ok(_mapper.Map<IEnumerable<MessageResponse>>(messages));
+        var result = await _coursesService.GetMessages(id, offset);
+        return result.Match<IActionResult>(
+            value => Ok(value),
+            e => BadRequest(e.Message)
+        );
     }
-
-    private async Task<bool> UserHasCourse(Course course)
-    {
-        int.TryParse(
-            User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value,
-            out int nameId);
-        ConnectUser teacher = await _em.Users.FindByIndexAsync(nameId);
-
-        if (teacher == null || (teacher.Role != Roles.Admin && teacher.Id != course.TeacherId))
-            return false;
-        else
-            return true;
-    }
-
-    private async Task<bool> AllowedToGetMessagesAsync(Course course)
-    {
-        int.TryParse(
-            User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value,
-            out int nameId);
-        ConnectUser user = await _em.Users.FindByIndexAsync(nameId);
-
-        if (user == null) return false;
-
-        if (await _em.Users.InDepartment(user.Id, course.DepartmentId) || user.Role == Roles.Admin)
-            return true;
-
-        return false;
-    }
-
 }

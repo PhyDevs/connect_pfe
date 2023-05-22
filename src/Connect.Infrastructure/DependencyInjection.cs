@@ -1,7 +1,9 @@
 using Connect.Application.Interfaces;
 using Connect.Application.Security;
+using Connect.Application.Services;
 using Connect.Infrastructure.Persistance;
 using Connect.Infrastructure.Security;
+using Connect.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +24,12 @@ public static class DependencyInjection
 
         services.AddScoped<IEntityManager, EntityManager>();
         services.AddSingleton<IConnectSecurity, ConnectSecurity>();
+
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IUsersService, UsersService>();
+        services.AddScoped<IDepartmentsService, DepartmentsService>();
+        services.AddScoped<ICoursesService, CoursesService>();
+        services.AddScoped<IMessagesService, MessagesService>();
 
         return services;
     }
