@@ -1,3 +1,4 @@
+using Connect.Infrastructure.Persistance;
 
 public static class StartupConfigureMiddelwares
 {
@@ -9,6 +10,13 @@ public static class StartupConfigureMiddelwares
         {
             app.UseSwagger();
             app.UseSwaggerUI();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var initialiser = scope.ServiceProvider.GetRequiredService<ConnectContextInitialiser>();
+                initialiser.Initialise();
+                initialiser.Seed();
+            }
         }
 
         app.UseCors(builder => builder.WithOrigins("https://localhost:3000", "http://localhost:3000")

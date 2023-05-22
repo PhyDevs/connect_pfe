@@ -11,7 +11,6 @@ const Home = ({}: HomeProps) => {
 
 	let location = useLocation();
 	let { departmentId, courseId, uri } = useParams()
-	console.log(departmentId, courseId, uri);
 	
 	return location.state && location.state.notFound ? (
 		<NotFound />

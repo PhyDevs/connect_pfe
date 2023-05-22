@@ -18,6 +18,8 @@ public static class DependencyInjection
                 builder => builder.MigrationsAssembly(typeof(ConnectContext).Assembly.FullName))
         );
 
+        services.AddScoped<ConnectContextInitialiser>();
+
         services.AddScoped<IEntityManager, EntityManager>();
         services.AddSingleton<IConnectSecurity, ConnectSecurity>();
 
